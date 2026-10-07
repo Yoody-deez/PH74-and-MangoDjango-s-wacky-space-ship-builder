@@ -1,0 +1,19 @@
+{
+	"workbench.startupEditor": "none",
+	"editor.minimap.enabled": false,
+	"editor.insertSpaces": false,
+	"editor.tabSize": 2,
+	"editor.fontSize": 16,
+	"terminal.integrated.fontSize": 16,
+	"debug.console.fontSize": 16,
+	"editor.copyWithSyntaxHighlighting": false,
+	"editor.inlayHints.enabled": "off",
+	"inlineChat.askInChat": false,
+	"chat.disableAIFeatures": false,
+	"chat.editing.revealNextChangeOnResolve": false,
+  "files.exclude": {
+    "AGENTS.md": true,
+    "CLAUDE.md": true,
+    ".vscode": true,
+  }
+}

@@ -1,0 +1,237 @@
+classDiagram
+    %% Core & Math
+    class Engine {
+        -Engine()
+        -bool isRunning
+        -Settings settings
+        +getInstance() Engine&
+        +init(string configPath) void
+        +run() void
+        +stop() void
+        +getSettings() Settings&
+        +saveSettings() void
+    }
+    class Settings {
+        +map~string, string~ data
+        +load(string filePath) bool
+        +save(string filePath) bool
+    }
+    class Matrix4x4 {
+        +float m[16]
+        +ortho(float l, float r, float b, float t, float n, float f) Matrix4x4
+        +operator const float*() const
+    }
+    class Vector2 {
+        +float x
+        +float y
+    }
+
+    Engine *-- Settings
+    Engine ..> Matrix4x4
+
+    %% GPU Pipeline
+    class Shader {
+        -unsigned int id
+        +Shader(enum type, string path)
+        +compile() bool
+        +getId() unsigned int
+    }
+    class ShaderProgram {
+        -unsigned int id
+        +attach(Shader shader) void
+        +link() bool
+        +saveBinary(string path) bool
+        +loadBinary(string path) bool
+        +use() void
+        +getUniformLocation(string name) int
+    }
+    class Buffer {
+        -unsigned int id
+        -enum type
+        +Buffer(enum type)
+        +setData(void* data, size_t size) void
+        +bind() void
+        +unbind() void
+    }
+    class VertexArray {
+        -unsigned int id
+        +VertexArray()
+        +addAttribute(Buffer vbo, int index, int size) void
+        +bind() void
+    }
+
+    ShaderProgram "1" *-- "*" Shader
+    VertexArray "1" o-- "*" Buffer
+
+    %% Resources
+    class Resource {
+        <<abstract>>
+        #string title
+        +getTitle() string
+        +virtual ~Resource()
+    }
+    class Texture {
+        -unsigned int id
+        -int width
+        -int height
+        +bind() void
+        +unbind() void
+    }
+    class Font {
+        -void* ftFace
+        +generateGlyphTexture(char c) Texture*
+    }
+    class ResourceManager {
+        -map~string, Resource*~ resources
+        +add(string title, Resource* res) void
+        +get~T~(string title) T*
+        +remove(string title) void
+    }
+
+    Resource <|-- Texture
+    Resource <|-- Font
+    ResourceManager "1" *-- "*" Resource
+
+    %% Events & Scenes
+    class Event {
+        +enum Type type
+        +Vector2 mousePos
+        +int button
+    }
+    class EventObserver {
+        <<interface>>
+        +onEvent(Event e)* void
+    }
+    class EventManager {
+        -vector~EventObserver*~ observers
+        +attach(EventObserver* obs) void
+        +detach(EventObserver* obs) void
+        +notify(Event e) void
+    }
+    class Scene {
+        <<abstract>>
+        #string title
+        #EventManager eventManager
+        +virtual load()* void
+        +virtual unload()* void
+        +virtual update(float dt)* void
+        +virtual render()* void
+        +getEventManager() EventManager&
+    }
+    class SceneManager {
+        -map~string, Scene*~ scenes
+        -Scene* currentScene
+        +addScene(string title, Scene* scene) void
+        +removeScene(string title) void
+        +switchTo(string title) void
+        +update(float dt) void
+        +render() void
+    }
+
+    Scene "1" *-- "1" EventManager
+    EventManager "1" o-- "*" EventObserver
+    SceneManager "1" *-- "*" Scene
+
+    %% UI System
+    class VisualControl {
+        <<abstract>>
+        #Vector2 position
+        #Vector2 size
+        +virtual render()* void
+        +virtual setPosition(Vector2 pos) void
+        +virtual setSize(Vector2 size) void
+    }
+    VisualControl --|> EventObserver
+
+    class ImageControl {
+        -Texture* texture
+        -bool keepAspect
+        +render() override
+    }
+    class Label {
+        -string text
+        -Font* font
+        -Vector2 color
+        +setText(string text) void
+        +render() override
+    }
+    class ProgressBar {
+        -float minVal, currentVal, maxVal
+        -Vector2 borderColor, bgColor, progressColor
+        +setProgress(float val) void
+        +render() override
+    }
+    class Checkbox {
+        -bool checked
+        -Vector2 borderColor, bgColor, checkColor
+        +isChecked() bool
+        +onEvent(Event e) override
+        +render() override
+    }
+    class Button {
+        -Label titleLabel
+        -Vector2 borderColor, bgColor, hoverColor
+        -bool isHovered
+        -function~void()~ onClick
+        +onEvent(Event e) override
+        +render() override
+    }
+    class Selector {
+        -vector~string~ items
+        -int currentIndex
+        -Button btnPrev
+        -Button btnNext
+        -Label itemLabel
+        +getSelected() string
+        +render() override
+    }
+    class Slider {
+        -float minVal, currentVal, maxVal, step
+        -Vector2 borderColor, bgColor, progressColor
+        -bool isHovered, isDragging
+        +getValue() float
+        +onEvent(Event e) override
+        +render() override
+    }
+
+    VisualControl <|-- ImageControl
+    VisualControl <|-- Label
+    VisualControl <|-- ProgressBar
+    VisualControl <|-- Checkbox
+    VisualControl <|-- Button
+    VisualControl <|-- Selector
+    VisualControl <|-- Slider
+    Button "1" *-- "1" Label
+    Selector "1" *-- "2" Button
+    Selector "1" *-- "1" Label
+
+    %% Concrete Scenes
+    class MainScene {
+        -ImageControl bg
+        -Label title
+        -Button btnStart, btnSettings, btnCredits, btnQuit
+        +load() override
+        +unload() override
+    }
+    class SettingsScene {
+        -ImageControl bg
+        -Selector langSelector, resSelector
+        -Checkbox fullscreenCb, vsyncCb
+        -Slider sensitivitySlider, fovSlider
+        -Button btnApply, btnBack
+        +load() override
+        +unload() override
+    }
+    class CreditsScene {
+        -Label title, creditsText
+        -Button btnBack
+        +load() override
+        +unload() override
+    }
+
+    Scene <|-- MainScene
+    Scene <|-- SettingsScene
+    Scene <|-- CreditsScene
+    MainScene "1" *-- "*" VisualControl
+    SettingsScene "1" *-- "*" VisualControl
+    CreditsScene "1" *-- "*" VisualControl

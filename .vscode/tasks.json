@@ -1,0 +1,71 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "cppbuild",
+            "label": "(Windows) Compiler",
+            "command": "cl.exe",
+            "args": [
+                "/std:c++17",
+                "/Z7",
+                "/EHsc",
+                "/nologo",
+                "/I${workspaceFolder}/build/include",
+                "/Fe${workspaceFolder}/build/program.exe",
+                "/Fo${workspaceFolder}/build/",
+                "${workspaceFolder}/src/*.cpp",
+                "/link",
+                "/libpath:${workspaceFolder}/build/lib",
+                "opengl32.lib",
+                "gl.lib",
+                "SDL3.lib",
+                "SDL3_ttf.lib",
+                "SDL3_image.lib",
+                "/machine:x64",
+                "/subsystem:windows"
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "Compilation Windows"
+        },
+        {
+            "type": "cppbuild",
+            "label": "(macOS) Compiler",
+            "command": "g++",
+            "args": [
+                "--std=c++17",
+                "-g",
+                "-D_THREAD_SAFE",
+                "-I${workspaceFolder}/build/include",
+                "-I/opt/homebrew/include",
+                "-I/opt/homebrew/Cellar/sdl3/3.4.16/include",
+                "-I/opt/homebrew/Cellar/sdl3_ttf/3.2.2/include",
+                "-I/opt/homebrew/Cellar/sdl3_image/3.4.6/include",
+                "-o",
+                "${workspaceFolder}/build/program.exe",
+                "${workspaceFolder}/src/*.cpp",
+                "-L${workspaceFolder}/build/lib",
+                "-L/opt/homebrew/Cellar/sdl3/3.4.16/lib",
+                "-L/opt/homebrew/Cellar/sdl3_ttf/3.2.2/lib",
+                "-L/opt/homebrew/Cellar/sdl3_image/3.4.6/lib",
+                "-L/opt/homebrew/lib",
+                "-lglad",
+                "-lSDL3_ttf",
+                "-lSDL3_image",
+                "-lSDL3",
+                "-framework",
+                "OpenGL"
+            ],
+            "group": "build",
+            "detail": "Compilation macOS"
+        }                
+    ]
+}
