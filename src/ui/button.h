@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <functional>
-#include "../system/Event.h"
+#include "../system/event.h"
 #include "../graphics/ResourceManager.h"
 #include "visualControl.h"
 #include "label.h"
@@ -10,15 +10,15 @@
 class button : public visualControl {
 private:
     label titleLabel;
-    vector2 borderColor;
-    vector2 bgColor;
-    vector2 hoverColor;
+    Vector2 borderColor;
+    Vector2 bgColor;
+    Vector2 hoverColor;
     bool isHovered;
     std::function<void()> onClick;
 
 public:
-    button(const std::string& title, font* font, vector2 pos, vector2 s, 
-           vector2 bCol, vector2 bgCol, vector2 hCol, std::function<void()> callback)
+    button(const std::string& title, font* font, Vector2 pos, Vector2 s, 
+           Vector2 bCol, Vector2 bgCol, Vector2 hCol, std::function<void()> callback)
         : titleLabel(title, font, {1.0f, 1.0f}), borderColor(bCol), 
           bgColor(bgCol), hoverColor(hCol), isHovered(false), onClick(callback) {
         position = pos;

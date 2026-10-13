@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "../system/Event.h"
+#include "../system/event.h"
 #include "../graphics/ResourceManager.h"
 #include "visualControl.h"
 
@@ -9,12 +9,12 @@ private:
     float minVal;
     float currentVal;
     float maxVal;
-    vector2 borderColor;
-    vector2 bgColor;
-    vector2 progressColor;
+    Vector2 borderColor;
+    Vector2 bgColor;
+    Vector2 progressColor;
 
 public:
-    progressBar(float min, float max, vector2 bCol, vector2 bgCol, vector2 pCol)
+    progressBar(float min, float max, Vector2 bCol, Vector2 bgCol, Vector2 pCol)
         : minVal(min), maxVal(max), currentVal(min), borderColor(bCol), bgColor(bgCol), progressColor(pCol) {}
 
     void setProgress(float val) {

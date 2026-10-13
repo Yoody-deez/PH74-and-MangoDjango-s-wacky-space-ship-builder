@@ -1,18 +1,18 @@
 #pragma once
 #include <string>
-#include "../system/Event.h"
+#include "../system/event.h"
 #include "../graphics/ResourceManager.h"
 #include "visualControl.h"
 
 class checkbox : public visualControl {
 private:
     bool checked;
-    vector2 borderColor;
-    vector2 bgColor;
-    vector2 checkColor;
+    Vector2 borderColor;
+    Vector2 bgColor;
+    Vector2 checkColor;
 
 public:
-    checkbox(bool initialState, vector2 bCol, vector2 bgCol, vector2 cCol)
+    checkbox(bool initialState, Vector2 bCol, Vector2 bgCol, Vector2 cCol)
         : checked(initialState), borderColor(bCol), bgColor(bgCol), checkColor(cCol) {}
 
     bool isChecked() const { return checked; }

@@ -1,9 +1,9 @@
 #version 330 core
 
-layout (location = 0) in vec2 aPos;      // VBO 1
-layout (location = 1) in vec2 aTexCoord;  // VBO 2
-layout (location = 2) in vec3 aColor;     // VBO 3
-layout (location = 3) in vec2 aOffset;    // Attribut 4 (Offset dynamique)
+layout (location = 0) in vec2 aPos;    
+layout (location = 1) in vec2 aTexCoord; 
+layout (location = 2) in vec3 aColor;    
+layout (location = 3) in vec2 aOffset; 
 
 out vec2 TexCoord;
 out vec3 OurColor;

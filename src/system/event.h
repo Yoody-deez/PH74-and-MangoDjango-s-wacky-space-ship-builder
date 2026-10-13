@@ -1,10 +1,10 @@
 #pragma once
-#include "../ui/vector2.h"
+#include "vector2.h"
 
 struct Event {
     enum class Type { MOUSE_CLICK, MOUSE_MOVE };
     Type type;
-    vector2 mousePos;
+    Vector2 mousePos;
     int button;
 };
 

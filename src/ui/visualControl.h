@@ -6,15 +6,15 @@
 
 class visualControl : public EventObserver {
 protected:
-    vector2 position;
-    vector2 size;
+    Vector2 position;
+    Vector2 size;
 
 public:
     virtual ~visualControl() = default;
 
     virtual void render() = 0;
-    virtual void setPosition(vector2 pos) { position = pos; }
-    virtual void setSize(vector2 s) { size = s; }
+    virtual void setPosition(Vector2 pos) { position = pos; }
+    virtual void setSize(Vector2 s) { size = s; }
     
     void onEvent(Event e) override {}
 };

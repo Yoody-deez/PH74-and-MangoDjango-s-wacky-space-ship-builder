@@ -1,9 +1,8 @@
 #pragma once
 #include <string>
-#include "../system/Event.h"
+#include "../system/event.h"
 #include "VisualControl.h"
-
-class Texture;
+#include "texture.h"
 
 class imageControl : public visualControl {
 private:

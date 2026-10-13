@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "../system/Event.h"
+#include "../system/event.h"
 #include "../graphics/ResourceManager.h"
 #include "visualControl.h"
 
@@ -10,14 +10,14 @@ private:
     float currentVal;
     float maxVal;
     float step;
-    vector2 borderColor;
-    vector2 bgColor;
-    vector2 progressColor;
+    Vector2 borderColor;
+    Vector2 bgColor;
+    Vector2 progressColor;
     bool isHovered;
     bool isDragging;
 
 public:
-    slider(float min, float max, float st, vector2 bCol, vector2 bgCol, vector2 pCol)
+    slider(float min, float max, float st, Vector2 bCol, Vector2 bgCol, Vector2 pCol)
         : minVal(min), maxVal(max), currentVal(min), step(st), 
           borderColor(bCol), bgColor(bgCol), progressColor(pCol), 
           isHovered(false), isDragging(false) {}
