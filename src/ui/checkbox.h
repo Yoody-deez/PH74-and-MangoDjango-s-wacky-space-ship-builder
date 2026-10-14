@@ -12,8 +12,12 @@ private:
     Vector2 checkColor;
 
 public:
-    checkbox(bool initialState, Vector2 bCol, Vector2 bgCol, Vector2 cCol)
-        : checked(initialState), borderColor(bCol), bgColor(bgCol), checkColor(cCol) {}
+    checkbox(Vector2 pos, Vector2 s, bool initialState = false, 
+             Vector2 bCol = Vector2(0,0), Vector2 bgCol = Vector2(0.2f,0.2f), Vector2 cCol = Vector2(1,1))
+        : checked(initialState), borderColor(bCol), bgColor(bgCol), checkColor(cCol) {
+        position = pos;
+        size = s;
+    }
 
     bool isChecked() const { return checked; }
 

@@ -1,27 +1,62 @@
 #pragma once
+#include <string>
+#include <iostream>
+#include <SDL3/SDL.h>
+#include <glad/gl.h>
 #include "resource.h"
 
-class Texture : public resource {
+class texture : public resource {
 private:
     unsigned int id;
     int width;
     int height;
 
 public:
-    Texture(const std::string& title, unsigned int textureId, int w, int h)
-        : resource(title), id(textureId), width(w), height(h) {}
+    texture(const std::string& path, bool pixelArt = false) : resource(path), id(0), width(0), height(0) {
+        SDL_Surface* surface = SDL_LoadSurface(path.c_str());
+        if (!surface) {
+            std::cerr << "Erreur de chargement d'image (" << path << "): " << SDL_GetError() << std::endl;
+            return;
+        }
 
-    ~Texture() override {
-        // Plus tard : glDeleteTextures(1, &id);
+        SDL_Surface* formattedSurface = SDL_ConvertSurface(surface, SDL_PIXELFORMAT_RGBA32);
+        SDL_DestroySurface(surface); 
+
+        if (!formattedSurface) {
+            std::cerr << "Erreur lors de la conversion de la surface (" << path << "): " << SDL_GetError() << std::endl;
+            return;
+        }
+
+        width = formattedSurface->w;
+        height = formattedSurface->h;
+
+        glGenTextures(1, &id);
+        glBindTexture(GL_TEXTURE_2D, id);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        
+        GLint filter = pixelArt ? GL_NEAREST : GL_LINEAR;
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
+
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, formattedSurface->pixels);
+
+        SDL_DestroySurface(formattedSurface);
+    }
+    texture(unsigned int existingId, int w, int h) 
+        : resource("glyph"), id(existingId), width(w), height(h) {}
+
+    ~texture() override {
+        if (id != 0) {
+            glDeleteTextures(1, &id);
+        }
     }
 
-    void bind() const {
-        // Plus tard : glBindTexture(GL_TEXTURE_2D, id);
-    }
-
-    void unbind() const {
-        // Plus tard : glBindTexture(GL_TEXTURE_2D, 0);
-    }
+    void bind() const { glBindTexture(GL_TEXTURE_2D, id); }
+    void unbind() const { glBindTexture(GL_TEXTURE_2D, 0); }
 
     unsigned int getId() const { return id; }
     int getWidth() const { return width; }

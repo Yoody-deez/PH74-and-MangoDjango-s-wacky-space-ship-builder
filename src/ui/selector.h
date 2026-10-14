@@ -6,7 +6,7 @@
 #include "visualControl.h"
 #include "button.h"
 #include "label.h"
-#include "font.h"
+#include "../graphics/font.h"
 
 class selector : public visualControl {
 private:

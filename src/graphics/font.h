@@ -1,20 +1,22 @@
 #pragma once
+#include <string>
 #include "resource.h"
 #include "texture.h"
 
 class font : public resource {
 private:
-    void* ftFace;
+    texture* atlasTexture;
 
 public:
-    font(const std::string& title) : resource(title), ftFace(nullptr) {}
-
-    ~font() override {
-        // Plus tard : nettoyage de la police FreeType
+    font(const std::string& path) : resource(path), atlasTexture(nullptr) {
+        atlasTexture = new texture(path, true);
     }
 
-    Texture* generateGlyphTexture(char c) {
-        // Logique FreeType à venir
-        return nullptr;
+    ~font() override {
+        delete atlasTexture;
+    }
+
+    texture* getAtlas() const {
+        return atlasTexture;
     }
 };

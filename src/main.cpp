@@ -1,70 +1,23 @@
 #include <SDL3/SDL.h>
 #include <glad/gl.h>
 #include <iostream>
-#include <vector>
-#include <cmath>
-#include <random>
 
 #include "WindowFactory.h"
 #include "WindowManager.h"
 #include "ContextGL.h"
-#include "Shader.h"
+#include "../build/shaders/shader.h"
+#include "../build/shaders/shaderProgram.h"
 
-#ifndef M_PI
-#define M_PI 3.14159265358979323846
-#endif
+#include "system/sceneManager.h"
+#include "scenes/mainScene.h"
+#include "scenes/settingsScene.h"
+#include "scenes/creditsScene.h"
+#include "graphics/texture.h"
+#include "graphics/font.h"
+#include "core/matrix4x4.h"
 
-constexpr int   WINDOW_WIDTH = 800;
-constexpr int   WINDOW_HEIGHT = 600;
-
-constexpr float CIRCLE_RADIUS = 40.0f;
-constexpr int   NUM_SEGMENTS = 64;   
-constexpr float SPEED = 250.0f;
-
-constexpr int   NUM_BUFFERS = 3;    
-
-
-GLuint loadTexture(const char* filePath) {
-    SDL_Surface* surface = SDL_LoadSurface(filePath);
-    if (!surface) {
-        std::cerr << "Erreur de chargement d'image: " << SDL_GetError() << std::endl;
-        return 0;
-    }
-
-    SDL_Surface* formattedSurface = SDL_ConvertSurface(surface, SDL_PIXELFORMAT_RGBA32);
-    SDL_DestroySurface(surface); 
-
-    if (!formattedSurface) {
-        std::cerr << "Erreur lors de la conversion de la surface: " << SDL_GetError() << std::endl;
-        return 0;
-    }
-
-    GLuint textureID;
-    glGenTextures(1, &textureID);
-    glBindTexture(GL_TEXTURE_2D, textureID);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, formattedSurface->w, formattedSurface->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, formattedSurface->pixels);
-    glGenerateMipmap(GL_TEXTURE_2D);
-
-    SDL_DestroySurface(formattedSurface);
-    return textureID;
-}
-
-void getOrthoProjection(float left, float right, float bottom, float top, float nearP, float farP, float* outMat) {
-    std::fill_n(outMat, 16, 0.0f);
-    outMat[0] = 2.0f / (right - left);
-    outMat[5] = 2.0f / (top - bottom);
-    outMat[10] = -2.0f / (farP - nearP);
-    outMat[12] = -(right + left) / (right - left);
-    outMat[13] = -(top + bottom) / (top - bottom);
-    outMat[14] = -(farP + nearP) / (farP - nearP);
-    outMat[15] = 1.0f;
-}
+constexpr int WINDOW_WIDTH = 800;
+constexpr int WINDOW_HEIGHT = 600;
 
 int WinMain(int argc, char* argv[])
 {
@@ -73,147 +26,106 @@ int WinMain(int argc, char* argv[])
         return -1;
     }
 
-    SDL_Window* sdlWin = SDL_CreateWindow("Cercle Texturé Ricochet", WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_OPENGL);
-    if (!sdlWin) return -1;
-
-    if (!ContextGL::getInstance().init(sdlWin)) {
+    SDL_Window* sdlWin = SDL_CreateWindow("Moteur 3D - C++ / OpenGL", WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_OPENGL);
+    if (!sdlWin) {
         SDL_Quit();
         return -1;
     }
 
-    GLuint shaderProgram = Shader::createShaderProgram("vertexShader.vs", "fragmentShader.fs");
-    if (shaderProgram == 0) return -1;
-
-    std::vector<float> positions;  
-    std::vector<float> texCoords;   
-    std::vector<float> colors;     
-
-    positions.push_back(0.0f); positions.push_back(0.0f);
-    texCoords.push_back(0.5f); texCoords.push_back(0.5f);
-    colors.push_back(1.0f);    colors.push_back(1.0f); colors.push_back(1.0f);
-
-    for (int i = 0; i <= NUM_SEGMENTS; ++i) {
-        float angle = static_cast<float>(i) * 2.0f * static_cast<float>(M_PI) / NUM_SEGMENTS;
-        float x = CIRCLE_RADIUS * std::cos(angle);
-        float y = CIRCLE_RADIUS * std::sin(angle);
-
-        positions.push_back(x);
-        positions.push_back(y);
-
- 
-        texCoords.push_back((std::cos(angle) + 1.0f) * 0.5f);
-        texCoords.push_back((std::sin(angle) + 1.0f) * 0.5f);
-
-        colors.push_back(1.0f);
-        colors.push_back(1.0f);
-        colors.push_back(1.0f);
+    if (!ContextGL::getInstance().init(sdlWin)) {
+        SDL_DestroyWindow(sdlWin);
+        SDL_Quit();
+        return -1;
     }
 
-    int totalVertices = static_cast<int>(positions.size() / 2);
+    Shader vs("shaders/vertexShader.vs", GL_VERTEX_SHADER);
+    if (!vs.compile()) {
+        std::cerr << "Erreur de compilation du vertex shader !" << std::endl;
+    }
 
-    GLuint VAO;
-    GLuint VBOs[NUM_BUFFERS];
+    Shader fs("shaders/fragmentShader.fs", GL_FRAGMENT_SHADER);
+    if (!fs.compile()) {
+        std::cerr << "Erreur de compilation du fragment shader !" << std::endl;
+    }
 
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(NUM_BUFFERS, VBOs);
+    ShaderProgram shaderProgram;
+    shaderProgram.attach(&vs);
+    shaderProgram.attach(&fs);
 
-    glBindVertexArray(VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBOs[0]);
-    glBufferData(GL_ARRAY_BUFFER, positions.size() * sizeof(float), positions.data(), GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
+    if (!shaderProgram.link()) {
+        std::cerr << "Erreur de linkage du shader program !" << std::endl;
+        SDL_DestroyWindow(sdlWin);
+        SDL_Quit();
+        return -1;
+    }
 
-    glBindBuffer(GL_ARRAY_BUFFER, VBOs[1]);
-    glBufferData(GL_ARRAY_BUFFER, texCoords.size() * sizeof(float), texCoords.data(), GL_STATIC_DRAW);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(1);
+    shaderProgram.use();
 
-    glBindBuffer(GL_ARRAY_BUFFER, VBOs[2]);
-    glBufferData(GL_ARRAY_BUFFER, colors.size() * sizeof(float), colors.data(), GL_STATIC_DRAW);
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(2);
 
-    glVertexAttrib2f(3, 0.0f, 0.0f);
+    matrix4x4 orthoProj = matrix4x4::ortho(0.0f, (float)WINDOW_WIDTH, (float)WINDOW_HEIGHT, 0.0f, -1.0f, 1.0f);
+        int projLoc = shaderProgram.getUniformLocation("uProjection");
+        if (projLoc != -1) {
+            glUniformMatrix4fv(projLoc, 1, GL_FALSE, orthoProj);
+        }
 
-    glBindVertexArray(0);
+    sceneManager sceneMgr;
 
-    GLuint texture = loadTexture("logo.png");
+    font* gameFont = new font("assets/fonts/font.png");
+    texture* bgTexture = new texture("assets/textures/Skyboxes/skybox-space.png");
 
-    float posX = WINDOW_WIDTH / 2.0f;
-    float posY = WINDOW_HEIGHT / 2.0f;
+    sceneMgr.addScene("MainScene", new mainScene(bgTexture, gameFont));
+    sceneMgr.addScene("SettingsScene", new settingsScene(bgTexture, gameFont));
+    sceneMgr.addScene("CreditsScene", new creditsScene(gameFont));
 
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_real_distribution<float> disAngle(0.0f, 2.0f * static_cast<float>(M_PI));
-
-    float randomAngle = disAngle(gen);
-    float dirX = std::cos(randomAngle);
-    float dirY = std::sin(randomAngle);
-
-    float projMatrix[16];
-    getOrthoProjection(0.0f, static_cast<float>(WINDOW_WIDTH), static_cast<float>(WINDOW_HEIGHT), 0.0f, -1.0f, 1.0f, projMatrix);
-
-    glUseProgram(shaderProgram);
-    GLint projLoc = glGetUniformLocation(shaderProgram, "uProjection");
-    glUniformMatrix4fv(projLoc, 1, GL_FALSE, projMatrix);
+    sceneMgr.switchTo("MainScene");
 
     Uint64 lastTime = SDL_GetTicks();
     bool isRunning = true;
-    SDL_Event event;
+    SDL_Event sdlEvent;
 
     while (isRunning) {
         Uint64 currentTime = SDL_GetTicks();
         float deltaTime = (currentTime - lastTime) / 1000.0f;
         lastTime = currentTime;
 
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_EVENT_QUIT) isRunning = false;
+        while (SDL_PollEvent(&sdlEvent)) {
+            if (sdlEvent.type == SDL_EVENT_QUIT) {
+                isRunning = false;
+            }
+
+            Event e;
+            if (sdlEvent.type == SDL_EVENT_MOUSE_MOTION) {
+                e.type = Event::Type::MOUSE_MOVE;
+                e.mousePos = Vector2(sdlEvent.motion.x, sdlEvent.motion.y);
+            }
+            else if (sdlEvent.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
+                e.type = Event::Type::MOUSE_CLICK;
+                e.button = (sdlEvent.button.button == SDL_BUTTON_LEFT) ? 1 : -1;
+                e.mousePos = Vector2(sdlEvent.button.x, sdlEvent.button.y);
+            }
+            else if (sdlEvent.type == SDL_EVENT_MOUSE_BUTTON_UP) {
+                e.type = Event::Type::MOUSE_CLICK;
+                e.button = -1;
+                e.mousePos = Vector2(sdlEvent.button.x, sdlEvent.button.y);
+            }
+
+            if (sceneMgr.getCurrentScene()) {
+                sceneMgr.getCurrentScene()->getEventManager().notify(e);
+            }
         }
 
-        posX += dirX * SPEED * deltaTime;
-        posY += dirY * SPEED * deltaTime;
-
-
-        if (posX - CIRCLE_RADIUS <= 0.0f) {
-            posX = CIRCLE_RADIUS;
-            dirX = -dirX;
-        }
-        else if (posX + CIRCLE_RADIUS >= WINDOW_WIDTH) {
-            posX = WINDOW_WIDTH - CIRCLE_RADIUS;
-            dirX = -dirX;
-        }
-
-        if (posY - CIRCLE_RADIUS <= 0.0f) {
-            posY = CIRCLE_RADIUS;
-            dirY = -dirY;
-        }
-        else if (posY + CIRCLE_RADIUS >= WINDOW_HEIGHT) {
-            posY = WINDOW_HEIGHT - CIRCLE_RADIUS;
-            dirY = -dirY;
-        }
+        sceneMgr.update(deltaTime);
 
         glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glUseProgram(shaderProgram);
-
-  
-        glVertexAttrib2f(3, posX, posY);
-
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texture);
-
-        glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLE_FAN, 0, totalVertices);
-        glBindVertexArray(0);
+        sceneMgr.render();
 
         SDL_GL_SwapWindow(sdlWin);
     }
 
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(NUM_BUFFERS, VBOs);
-    glDeleteTextures(1, &texture);
-    glDeleteProgram(shaderProgram);
+    delete gameFont;
+    delete bgTexture;
 
     SDL_DestroyWindow(sdlWin);
     SDL_Quit();

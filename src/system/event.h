@@ -1,5 +1,5 @@
 #pragma once
-#include "vector2.h"
+#include "../core/vector2.h"
 
 struct Event {
     enum class Type { MOUSE_CLICK, MOUSE_MOVE };

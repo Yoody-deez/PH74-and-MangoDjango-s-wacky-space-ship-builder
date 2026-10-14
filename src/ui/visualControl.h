@@ -2,7 +2,7 @@
 #include <string>
 #include "../system/event.h"
 #include "../graphics/resourceManager.h"
-#include "vector2.h"
+#include "../core/vector2.h"
 
 class visualControl : public EventObserver {
 protected:

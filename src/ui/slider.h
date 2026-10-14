@@ -17,10 +17,14 @@ private:
     bool isDragging;
 
 public:
-    slider(float min, float max, float st, Vector2 bCol, Vector2 bgCol, Vector2 pCol)
+    slider(float min, float max, float st, Vector2 pos, Vector2 s,
+           Vector2 bCol = Vector2(0,0), Vector2 bgCol = Vector2(0.2f,0.2f), Vector2 pCol = Vector2(0.5f,0.5f))
         : minVal(min), maxVal(max), currentVal(min), step(st), 
           borderColor(bCol), bgColor(bgCol), progressColor(pCol), 
-          isHovered(false), isDragging(false) {}
+          isHovered(false), isDragging(false) {
+        position = pos;
+        size = s;
+    }
 
     float getValue() const { return currentVal; }
 
