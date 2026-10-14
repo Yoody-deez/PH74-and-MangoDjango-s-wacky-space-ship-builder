@@ -13,28 +13,15 @@ private:
     GLenum type;
 
 public:
-    Buffer(Type t) : id(0), type(static_cast<GLenum>(t)) {
-        glGenBuffers(1, &id);
-    }
+    Buffer(Type t) : id(0), type(static_cast<GLenum>(t)) {}
 
-    ~Buffer() {
-        if (id != 0) {
-            glDeleteBuffers(1, &id);
-        }
-    }
+    ~Buffer() {}
 
-    void bind() const {
-        glBindBuffer(type, id);
-    }
+    void bind() const {}
 
-    void unbind() const {
-        glBindBuffer(type, 0);
-    }
+    void unbind() const {}
 
-    void setData(void* data, size_t size) {
-        bind();
-        glBufferData(type, size, data, GL_STATIC_DRAW);
-    }
+    void setData(void* data, size_t size) {}
 
-    unsigned int getId() const { return id; }
+    unsigned int getId() const {}
 };

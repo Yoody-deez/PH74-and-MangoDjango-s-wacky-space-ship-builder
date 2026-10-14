@@ -12,6 +12,5 @@ private:
 public:
     imageControl(Texture* tex, bool aspect = true) : texture(tex), keepAspect(aspect) {}
 
-    void render() override {
-    }
+    void render() override {}
 };

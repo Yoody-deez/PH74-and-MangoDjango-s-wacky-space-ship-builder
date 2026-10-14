@@ -10,6 +10,6 @@ struct Event {
 
 class EventObserver {
 public:
-    virtual ~EventObserver() = default;
+    virtual ~EventObserver();
     virtual void onEvent(Event e) = 0;
 };

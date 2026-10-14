@@ -25,27 +25,11 @@ public:
           btnNext(">", font, {pos.x + s.x - 30, pos.y}, {30, s.y}, {0,0}, {0.5,0.5}, {0.7,0.7}, [this]() {
               if (currentIndex < (int)items.size() - 1) currentIndex++;
           }),
-          itemLabel(items.empty() ? "" : items[0], font, {1,1}) {
-        position = pos;
-        size = s;
-    }
+          itemLabel(items.empty() ? "" : items[0], font, {1,1}) {}
 
-    std::string getSelected() const {
-        if (items.empty()) return "";
-        return items[currentIndex];
-    }
+    std::string getSelected() const {}
 
-    void onEvent(Event e) override {
-        btnPrev.onEvent(e);
-        btnNext.onEvent(e);
-        if (!items.empty()) {
-            itemLabel.setText(items[currentIndex]);
-        }
-    }
+    void onEvent(Event e) override {}
 
-    void render() override {
-        btnPrev.render();
-        btnNext.render();
-        itemLabel.render();
-    }
+    void render() override { }
 };

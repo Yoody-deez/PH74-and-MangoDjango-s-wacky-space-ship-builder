@@ -9,12 +9,7 @@ private:
 public:
     font(const std::string& title) : resource(title), ftFace(nullptr) {}
 
-    ~font() override {
-        // Plus tard : nettoyage de la police FreeType
-    }
+    ~font() override {}
 
-    Texture* generateGlyphTexture(char c) {
-        // Logique FreeType à venir
-        return nullptr;
-    }
+    Texture* generateGlyphTexture(char c) {}
 };

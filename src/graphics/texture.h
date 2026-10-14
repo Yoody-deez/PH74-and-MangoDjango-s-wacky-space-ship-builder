@@ -11,19 +11,13 @@ public:
     Texture(const std::string& title, unsigned int textureId, int w, int h)
         : resource(title), id(textureId), width(w), height(h) {}
 
-    ~Texture() override {
-        // Plus tard : glDeleteTextures(1, &id);
-    }
+    ~Texture() override {}
 
-    void bind() const {
-        // Plus tard : glBindTexture(GL_TEXTURE_2D, id);
-    }
+    void bind() const {}
 
-    void unbind() const {
-        // Plus tard : glBindTexture(GL_TEXTURE_2D, 0);
-    }
+    void unbind() const {}
 
-    unsigned int getId() const { return id; }
-    int getWidth() const { return width; }
-    int getHeight() const { return height; }
+    unsigned int getId() const {}
+    int getWidth() const {}
+    int getHeight() const {}
 };
