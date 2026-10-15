@@ -2,14 +2,14 @@
 #include "resource.h"
 #include "texture.h"
 
-class font : public resource {
+class Font : public Resource {
 private:
     void* ftFace;
 
 public:
-    font(const std::string& title) : resource(title), ftFace(nullptr) {}
+    Font(const std::string& title);
 
-    ~font() override {}
+    ~Font() override;
 
-    Texture* generateGlyphTexture(char c) {}
+    Texture* generateGlyphTexture(char c);
 };

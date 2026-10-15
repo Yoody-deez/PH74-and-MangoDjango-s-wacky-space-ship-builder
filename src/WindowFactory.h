@@ -10,5 +10,5 @@ public:
         std::unique_ptr<Window> at2;
     };
 
-    static WindowSet createWindows() {}
+    static WindowSet createWindows();
 };

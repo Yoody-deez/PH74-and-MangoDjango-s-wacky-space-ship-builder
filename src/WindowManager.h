@@ -10,11 +10,11 @@ private:
     std::vector<std::unique_ptr<Window>> m_windows;
 
 public:
-    void addWindow(std::unique_ptr<Window> win) {}
+    void addWindow(std::unique_ptr<Window> win);
 
-    Window* getWindow(size_t index = 0) const {}
+    Window* getWindow(size_t index = 0) const;
 
-    void makeCurrent(size_t index = 0) {}
+    void makeCurrent(size_t index = 0);
 
-    void swapBuffersAll() {}
+    void swapBuffersAll();
 };

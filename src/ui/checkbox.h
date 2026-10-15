@@ -4,7 +4,7 @@
 #include "../graphics/ResourceManager.h"
 #include "visualControl.h"
 
-class checkbox : public visualControl {
+class Checkbox : public VisualControl {
 private:
     bool checked;
     Vector2 borderColor;
@@ -12,12 +12,11 @@ private:
     Vector2 checkColor;
 
 public:
-    checkbox(bool initialState, Vector2 bCol, Vector2 bgCol, Vector2 cCol)
-        : checked(initialState), borderColor(bCol), bgColor(bgCol), checkColor(cCol) {}
+    Checkbox(bool initialState, Vector2 bCol, Vector2 bgCol, Vector2 cCol);
 
-    bool isChecked() const {}
+    bool isChecked() const;
 
-    void onEvent(Event e) override {}
+    void onEvent(Event e) override;
 
-    void render() override {}
+    void render() override;
 };

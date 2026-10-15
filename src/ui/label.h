@@ -5,18 +5,17 @@
 #include "visualControl.h"
 #include "font.h"
 
-class label : public visualControl {
+class Label : public VisualControl {
 private:
     std::string text;
-    font* textFont;
+    Font* textFont;
     Vector2 color;
 
 public:
-    label(const std::string& t, font* f, Vector2 col) : text(t), textFont(f), color(col) {}
+    Label(const std::string& t, Font* f, Vector2 col);
 
-    void setText(const std::string& newText) { text = newText; }
-    const std::string& getText() const { return text; }
+    void setText(const std::string& newText);
+    const std::string& getText() const;
 
-    void render() override {
-    }
+    void render() override;
 };

@@ -8,25 +8,25 @@ private:
     bool isRunning;
     Settings settings;
 
-    Engine(){}
-    ~Engine() {}
+    Engine();
+    ~Engine();
 
     Engine(const Engine&);
     Engine& operator=(const Engine&);
 
 public:
-    static Engine& getInstance() {}
+    static Engine& getInstance();
 
-    void init(const std::string& configPath) {}
+    void init(const std::string& configPath);
 
-    void run() {}
+    void run();
 
-    void stop() {}
+    void stop();
 
     // Récupérer les paramètres
-    Settings& getSettings() {}
+    Settings& getSettings();
 
-    void saveSettings(const std::string& configPath) {}
+    void saveSettings(const std::string& configPath);
 
-    bool getIsRunning() const {}
+    bool getIsRunning() const;
 };

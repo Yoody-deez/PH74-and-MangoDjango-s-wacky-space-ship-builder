@@ -2,13 +2,13 @@
 #include "texture.h"
 #include "font.h"
 
-font::font(const std::string& title) : resource(title), ftFace(nullptr) {}
+Font::Font(const std::string& title) : Resource(title), ftFace(nullptr) {}
 
-font::~font() {
+Font::~Font() {
 		// Plus tard : nettoyage de la police FreeType
 }
 
-Texture* font::generateGlyphTexture(char c) {
+Texture* Font::generateGlyphTexture(char c) {
 		// Logique FreeType à venir
 		return nullptr;
 }

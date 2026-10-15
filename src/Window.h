@@ -10,15 +10,15 @@ private:
     std::string m_title;
 
 public:
-    Window(const std::string& title, int x, int y, int size) : m_title(title) {}
+    Window(const std::string& title, int x, int y, int size);
 
     ~Window();
 
-    SDL_Window* getSDLWindow() const {}
+    SDL_Window* getSDLWindow() const;
 
-    void setTitle(const std::string& title) {}
+    void setTitle(const std::string& title);
 
-    void makeCurrent(SDL_GLContext context) {}
+    void makeCurrent(SDL_GLContext context);
 
-    void swapBuffers() {}
+    void swapBuffers();
 };

@@ -13,15 +13,15 @@ private:
     GLenum type;
 
 public:
-    Buffer(Type t) : id(0), type(static_cast<GLenum>(t)) {}
+    Buffer(Type t);
 
-    ~Buffer() {}
+    ~Buffer();
 
-    void bind() const {}
+    void bind() const;
 
-    void unbind() const {}
+    void unbind() const;
 
-    void setData(void* data, size_t size) {}
+    void setData(void* data, size_t size);
 
-    unsigned int getId() const {}
+    unsigned int getId() const;
 };

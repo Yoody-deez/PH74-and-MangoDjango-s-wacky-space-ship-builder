@@ -1,13 +1,13 @@
 #pragma once
 #include <string>
 
-class resource {
+class Resource {
 protected:
     std::string title;
 
 public:
-    resource(const std::string& t) : title(t) {}
-    virtual ~resource() = default;
+    Resource(const std::string& t);
+    virtual ~Resource() = default;
 
-    std::string getTitle() const { return title; }
+    std::string getTitle() const;
 };

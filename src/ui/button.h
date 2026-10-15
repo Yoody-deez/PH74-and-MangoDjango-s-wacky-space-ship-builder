@@ -7,9 +7,9 @@
 #include "label.h"
 #include "font.h"
 
-class button : public visualControl {
+class Button : public VisualControl {
 private:
-    label titleLabel;
+    Label titleLabel;
     Vector2 borderColor;
     Vector2 bgColor;
     Vector2 hoverColor;
@@ -17,12 +17,10 @@ private:
     std::function<void()> onClick;
 
 public:
-    button(const std::string& title, font* font, Vector2 pos, Vector2 s, 
-           Vector2 bCol, Vector2 bgCol, Vector2 hCol, std::function<void()> callback)
-        : titleLabel(title, font, {1.0f, 1.0f}), borderColor(bCol), 
-          bgColor(bgCol), hoverColor(hCol), isHovered(false), onClick(callback) {}
+    Button(const std::string& title, Font* font, Vector2 pos, Vector2 s, 
+           Vector2 bCol, Vector2 bgCol, Vector2 hCol, std::function<void()> callback);
 
-    void onEvent(Event e) override {}
+    void onEvent(Event e) override;
 
-    void render() override {}
+    void render() override;
 };

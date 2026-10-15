@@ -7,12 +7,12 @@ class Settings {
 public:
     std::map<std::string, std::string> data;
 
-    bool load(const std::string& filePath) {}
+    bool load(const std::string& filePath);
 
-    bool save(const std::string& filePath) {}
+    bool save(const std::string& filePath);
 
-    std::string get(const std::string& key, const std::string& defaultValue = "") const {}
+    std::string get(const std::string& key, const std::string& defaultValue = "") const;
 
     // Définir une valeur
-    void set(const std::string& key, const std::string& value) {}
+    void set(const std::string& key, const std::string& value);
 };

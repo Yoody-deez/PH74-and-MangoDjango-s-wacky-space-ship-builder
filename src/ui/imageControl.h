@@ -4,13 +4,13 @@
 #include "VisualControl.h"
 #include "texture.h"
 
-class imageControl : public visualControl {
+class ImageControl : public VisualControl {
 private:
     Texture* texture;
     bool keepAspect;
 
 public:
-    imageControl(Texture* tex, bool aspect = true) : texture(tex), keepAspect(aspect) {}
+    ImageControl(Texture* tex, bool aspect = true);
 
-    void render() override {}
+    void render() override;
 };

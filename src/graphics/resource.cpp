@@ -1,7 +1,7 @@
-#include "resource.h"
+#include "Resource.h"
 
 
-resource::resource(const std::string& t) : title(t) {}
-resource::~resource() = default;
+Resource::Resource(const std::string& t) : title(t) {}
+Resource::~Resource() = default;
 
-std::string resource::getTitle() const { return title; }
+std::string Resource::getTitle() const { return title; }
