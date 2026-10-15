@@ -12,9 +12,9 @@ class Selector : public VisualControl {
 private:
     std::vector<std::string> items;
     int currentIndex;
-    button btnPrev;
-    button btnNext;
-    label itemLabel;
+    Button btnPrev;
+    Button btnNext;
+    Label itemLabel;
 
 public:
     Selector(const std::vector<std::string>& list, Font* font, Vector2 pos, Vector2 s);

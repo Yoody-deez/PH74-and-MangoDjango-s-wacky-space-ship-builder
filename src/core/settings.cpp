@@ -43,7 +43,7 @@ bool Settings::save(const std::string& filePath) {
 		return true;
 }
 
-std::string Settings::get(const std::string& key, const std::string& defaultValue = "") const {
+std::string Settings::get(const std::string& key, const std::string& defaultValue) const {
 		auto it = data.find(key);
 		if (it != data.end()) {
 				return it->second;
