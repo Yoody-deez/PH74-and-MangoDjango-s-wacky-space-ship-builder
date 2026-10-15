@@ -3,18 +3,18 @@
 #include <fstream>
 #include <sstream>
 
-std::string Shader::loadShaderSource(const std::string& filePath) {
-    std::ifstream file(filePath);
+string Shader::loadShaderSource(const string& filePath) {
+    ifstream file(filePath);
     if (!file.is_open()) {
-        std::cerr << "[Shader Error] Impossible d'ouvrir le fichier : " << filePath << std::endl;
+        cerr << "[Shader Error] Impossible d'ouvrir le fichier : " << filePath << endl;
         return "";
     }
-    std::stringstream buffer;
+    stringstream buffer;
     buffer << file.rdbuf();
     return buffer.str();
 }
 
-bool Shader::checkCompileErrors(GLuint shader, const std::string& type) {
+bool Shader::checkCompileErrors(GLuint shader, const string& type) {
     GLint success;
     char infoLog[1024];
 
@@ -22,7 +22,7 @@ bool Shader::checkCompileErrors(GLuint shader, const std::string& type) {
         glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
         if (!success) {
             glGetShaderInfoLog(shader, 1024, NULL, infoLog);
-            std::cerr << "[Shader Compile Error - " << type << "]:\n" << infoLog << std::endl;
+            cerr << "[Shader Compile Error - " << type << "]:\n" << infoLog << endl;
             return false;
         }
     }
@@ -30,16 +30,16 @@ bool Shader::checkCompileErrors(GLuint shader, const std::string& type) {
         glGetProgramiv(shader, GL_LINK_STATUS, &success);
         if (!success) {
             glGetProgramInfoLog(shader, 1024, NULL, infoLog);
-            std::cerr << "[Shader Link Error - " << type << "]:\n" << infoLog << std::endl;
+            cerr << "[Shader Link Error - " << type << "]:\n" << infoLog << endl;
             return false;
         }
     }
     return true;
 }
 
-GLuint Shader::createShaderProgram(const std::string& vertexPath, const std::string& fragmentPath) {
-    std::string vertexCode = loadShaderSource(vertexPath);
-    std::string fragmentCode = loadShaderSource(fragmentPath);
+GLuint Shader::createShaderProgram(const string& vertexPath, const string& fragmentPath) {
+    string vertexCode = loadShaderSource(vertexPath);
+    string fragmentCode = loadShaderSource(fragmentPath);
 
     if (vertexCode.empty() || fragmentCode.empty()) {
         return 0;

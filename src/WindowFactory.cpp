@@ -1,9 +1,9 @@
 #include "WindowFactory.h"
 
 WindowFactory::WindowSet WindowFactory::createWindows() {
-		std::random_device rd;
-		std::mt19937 gen(rd());
-		std::uniform_int_distribution<> distrib(300, 400);
+		random_device rd;
+		mt19937 gen(rd());
+		uniform_int_distribution<> distrib(300, 400);
 		int gSize = distrib(gen);
 
 		SDL_DisplayID primaryDisplay = SDL_GetPrimaryDisplay();
@@ -14,7 +14,7 @@ WindowFactory::WindowSet WindowFactory::createWindows() {
 		int gY = displayBounds.y + (displayBounds.h - gSize) / 2;
 
 		WindowSet set;
-		set.at2 = std::make_unique<Window>("Atelier 2", gX, gY, gSize);
+		set.at2 = make_unique<Window>("Atelier 2", gX, gY, gSize);
 
 		return set;
 }

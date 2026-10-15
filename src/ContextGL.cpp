@@ -1,6 +1,8 @@
 #include "ContextGL.h"
 #include <iostream>
 
+using namespace std;
+
 ContextGL::~ContextGL() {
 		if (m_context) {
 				SDL_GL_DestroyContext(m_context);
@@ -15,12 +17,12 @@ ContextGL& ContextGL::getInstance() {
 bool ContextGL::init(SDL_Window* masterWindow) {
 		m_context = SDL_GL_CreateContext(masterWindow);
 		if (!m_context) {
-				std::cerr << "Erreur de création du contexte GL : " << SDL_GetError() << std::endl;
+				cerr << "Erreur de création du contexte GL : " << SDL_GetError() << endl;
 				return false;
 		}
 
 		if (!gladLoadGL((GLADloadfunc)SDL_GL_GetProcAddress)) {
-				std::cerr << "Échec de l'initialisation de GLAD" << std::endl;
+				cerr << "Échec de l'initialisation de GLAD" << endl;
 				return false;
 		}
 

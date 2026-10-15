@@ -3,16 +3,18 @@
 #include <string>
 #include <map>
 
+using namespace std;
+
 class Settings {
 public:
-    std::map<std::string, std::string> data;
+    std::map<string, string> data;
 
-    bool load(const std::string& filePath);
+    bool load(const string& filePath);
 
-    bool save(const std::string& filePath);
+    bool save(const string& filePath);
 
-    std::string get(const std::string& key, const std::string& defaultValue = "") const;
+    string get(const string& key, const string& defaultValue = "") const;
 
     // Définir une valeur
-    void set(const std::string& key, const std::string& value);
+    void set(const string& key, const string& value);
 };

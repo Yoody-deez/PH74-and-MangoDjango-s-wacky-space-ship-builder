@@ -1,7 +1,8 @@
 #include "texture.h"
 
+using namespace std;
 
-Texture::Texture(const std::string& title, unsigned int textureId, int w, int h)
+Texture::Texture(const string& title, unsigned int textureId, int w, int h)
 : Resource(title), id(textureId), width(w), height(h) {}
 
 Texture::~Texture() {

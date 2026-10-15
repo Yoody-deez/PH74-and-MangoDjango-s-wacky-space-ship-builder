@@ -1,7 +1,7 @@
 #include "WindowManager.h"
 
-void WindowManager::addWindow(std::unique_ptr<Window> win) {
-		m_windows.push_back(std::move(win));
+void WindowManager::addWindow(unique_ptr<Window> win) {
+		m_windows.push_back(move(win));
 }
 
 Window* WindowManager::getWindow(size_t index) const {

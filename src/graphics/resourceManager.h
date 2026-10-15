@@ -3,17 +3,19 @@
 #include <unordered_map>
 #include "resource.h"
 
+using namespace std;
+
 class ResourceManager {
 private:
-    std::unordered_map<std::string, Resource*> resources;
+    unordered_map<string, Resource*> resources;
 
 public:
     ~ResourceManager();
 
-    void add(const std::string& title, Resource* res);
+    void add(const string& title, Resource* res);
 
     template<typename T>
-    T get(const std::string& title);
+    T get(const string& title);
 
-    void remove(const std::string& title);
+    void remove(const string& title);
 };

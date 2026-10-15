@@ -7,6 +7,8 @@
 #include "label.h"
 #include "font.h"
 
+using namespace std;
+
 class Button : public VisualControl {
 private:
     Label titleLabel;
@@ -14,11 +16,11 @@ private:
     Vector2 bgColor;
     Vector2 hoverColor;
     bool isHovered;
-    std::function<void()> onClick;
+    function<void()> onClick;
 
 public:
-    Button(const std::string& title, Font* font, Vector2 pos, Vector2 s, 
-           Vector2 bCol, Vector2 bgCol, Vector2 hCol, std::function<void()> callback);
+    Button(const string& title, Font* font, Vector2 pos, Vector2 s, 
+           Vector2 bCol, Vector2 bgCol, Vector2 hCol, function<void()> callback);
 
     void onEvent(Event e) override;
 

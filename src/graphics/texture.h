@@ -1,6 +1,8 @@
 #pragma once
 #include "resource.h"
 
+using namespace std;
+
 class Texture : public Resource {
 private:
     unsigned int id;
@@ -8,7 +10,7 @@ private:
     int height;
 
 public:
-    Texture(const std::string& title, unsigned int textureId, int w, int h);
+    Texture(const string& title, unsigned int textureId, int w, int h);
 
     ~Texture() override;
 

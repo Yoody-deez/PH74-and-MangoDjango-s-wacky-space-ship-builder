@@ -3,6 +3,8 @@
 #include <string>
 #include "settings.h"
 
+using namespace std;
+
 class Engine {
 private:
     bool isRunning;
@@ -17,7 +19,7 @@ private:
 public:
     static Engine& getInstance();
 
-    void init(const std::string& configPath);
+    void init(const string& configPath);
 
     void run();
 
@@ -26,7 +28,7 @@ public:
     // Récupérer les paramètres
     Settings& getSettings();
 
-    void saveSettings(const std::string& configPath);
+    void saveSettings(const string& configPath);
 
     bool getIsRunning() const;
 };

@@ -1,6 +1,6 @@
 #include "Window.h"
 
-Window::Window(const std::string& title, int x, int y, int size)
+Window::Window(const string& title, int x, int y, int size)
 		: m_title(title)
 {
 		m_sdlWindow = SDL_CreateWindow(m_title.c_str(), size, size, SDL_WINDOW_OPENGL);
@@ -19,7 +19,7 @@ SDL_Window* Window::getSDLWindow() const {
 		return m_sdlWindow;
 }
 
-void Window::setTitle(const std::string& title) {
+void Window::setTitle(const string& title) {
 		m_title = title;
 		if (m_sdlWindow) {
 				SDL_SetWindowTitle(m_sdlWindow, m_title.c_str());
