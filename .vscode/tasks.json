@@ -38,6 +38,7 @@
         },
         {
             "type": "cppbuild",
+            
             "label": "(macOS) Compiler",
             "command": "g++",
             "args": [
