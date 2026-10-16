@@ -3,19 +3,21 @@
 #include <algorithm>
 #include "Event.h"
 
+using namespace std;
+
 class EventManager {
 private:
-    std::vector<EventObserver*> observers;
+    vector<EventObserver*> observers;
 
 public:
     void attach(EventObserver* obs) {
-        if (obs && std::find(observers.begin(), observers.end(), obs) == observers.end()) {
+        if (obs && find(observers.begin(), observers.end(), obs) == observers.end()) {
             observers.push_back(obs);
         }
     }
 
     void detach(EventObserver* obs) {
-        observers.erase(std::remove(observers.begin(), observers.end(), obs), observers.end());
+        observers.erase(remove(observers.begin(), observers.end(), obs), observers.end());
     }
 
     void notify(Event e) {

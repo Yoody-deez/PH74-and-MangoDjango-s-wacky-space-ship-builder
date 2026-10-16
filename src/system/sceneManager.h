@@ -1,39 +1,40 @@
 #pragma once
 #include <string>
 #include <unordered_map>
-#include <iostream>
 #include "Scene.h"
 
-class sceneManager {
-private:
-    std::unordered_map<std::string, scene*> scenes;
-    scene* currentScene;
+using namespace std;
 
-    sceneManager() : currentScene(nullptr) {}
+class SceneManager {
+private:
+    unordered_map<string, Scene*> scenes;
+    Scene* currentScene;
+
+    SceneManager() : currentScene(nullptr) {}
 
 public:
-    static sceneManager& getInstance() {
-        static sceneManager instance;
+    static SceneManager& getInstance() {
+        static SceneManager instance;
         return instance;
     }
 
-    sceneManager(const sceneManager&) = delete;
-    sceneManager& operator=(const sceneManager&) = delete;
+    SceneManager(const SceneManager&) = delete;
+    SceneManager& operator=(const SceneManager&) = delete;
 
-    ~sceneManager() {
+    ~SceneManager() {
         for (auto& pair : scenes) {
             delete pair.second;
         }
         scenes.clear();
     }
 
-    void addScene(const std::string& title, scene* scene) {
+    void addScene(const string& title, Scene* scene) {
         if (scene && scenes.find(title) == scenes.end()) {
             scenes[title] = scene;
         }
     }
 
-    void removeScene(const std::string& title) {
+    void removeScene(const string& title) {
         auto it = scenes.find(title);
         if (it != scenes.end()) {
             if (currentScene == it->second) {
@@ -45,7 +46,7 @@ public:
         }
     }
 
-    void switchTo(const std::string& title) {
+    void switchTo(const string& title) {
         auto it = scenes.find(title);
         if (it != scenes.end()) {
             if (currentScene) {
@@ -53,9 +54,9 @@ public:
             }
             currentScene = it->second;
             currentScene->load();
-            std::cout << "Changement de scène vers : " << title << std::endl;
+            cout << "Changement de scène vers : " << title << endl;
         } else {
-            std::cerr << "ERREUR::SCENEMANAGER::SCENE_INTROUVABLE : " << title << std::endl;
+            cerr << "ERREUR::SceneManager::SCENE_INTROUVABLE : " << title << endl;
         }
     }
 
@@ -71,5 +72,5 @@ public:
         }
     }
 
-    scene* getCurrentScene() const { return currentScene; }
+    Scene* getCurrentScene() const { return currentScene; }
 };

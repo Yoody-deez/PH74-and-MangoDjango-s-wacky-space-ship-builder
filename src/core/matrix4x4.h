@@ -1,10 +1,10 @@
 #pragma once
 #include <cstring>
 
-class matrix4x4 {
+class Matrix4x4 {
 public:
     float m[16];
-    matrix4x4() {
+    Matrix4x4() {
         std::memset(m, 0, sizeof(m));
         m[0] = 1.0f;
         m[5] = 1.0f;
@@ -12,12 +12,10 @@ public:
         m[15] = 1.0f;
     }
 
-    operator const float* () const {
-        return m;
-    }
+    operator const float* () const;
 
-    static matrix4x4 ortho(float left, float right, float bottom, float top, float zNear, float zFar) {
-        matrix4x4 result;
+    static Matrix4x4 ortho(float left, float right, float bottom, float top, float zNear, float zFar) {
+        Matrix4x4 result;
 
         result.m[0] = 2.0f / (right - left);
         result.m[5] = 2.0f / (top - bottom);

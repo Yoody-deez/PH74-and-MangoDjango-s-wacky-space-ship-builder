@@ -7,30 +7,13 @@ private:
     unsigned int id;
 
 public:
-    VertexArray() : id(0) {
-        glGenVertexArrays(1, &id);
-    }
+    VertexArray();
 
-    ~VertexArray() {
-        if (id != 0) {
-            glDeleteVertexArrays(1, &id);
-        }
-    }
+    ~VertexArray();
 
-    void bind() const {
-        glBindVertexArray(id);
-    }
+    void bind() const;
 
-    void unbind() const {
-        glBindVertexArray(0);
-    }
+    void unbind() const;
 
-    void addAttribute(const Buffer& vbo, int index, int size, GLenum type = GL_FLOAT, GLboolean normalized = GL_FALSE, GLsizei stride = 0, const void* pointer = 0) {
-        bind();
-        vbo.bind();
-        glVertexAttribPointer(index, size, type, normalized, stride, pointer);
-        glEnableVertexAttribArray(index);
-        vbo.unbind();
-        unbind();
-    }
+    void addAttribute(const Buffer& vbo, int index, int size, GLenum type = GL_FLOAT, GLboolean normalized = GL_FALSE, GLsizei stride = 0, const void* pointer = 0);
 };
