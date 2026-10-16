@@ -1,5 +1,5 @@
 #pragma once
-#include <string>
+#include <cstring>
 #include <SDL3/SDL.h>
 #include <glad/gl.h>
 #include "resource.h"

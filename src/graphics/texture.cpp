@@ -1,6 +1,5 @@
 #include "texture.h"
 #include <iostream>
-#include <cstring>
 
 
 Texture::Texture(const string& path, bool pixelArt) : Resource(path), id(0), width(0), height(0) {
