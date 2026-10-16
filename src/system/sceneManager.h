@@ -9,8 +9,16 @@ private:
     std::unordered_map<std::string, scene*> scenes;
     scene* currentScene;
 
-public:
     sceneManager() : currentScene(nullptr) {}
+
+public:
+    static sceneManager& getInstance() {
+        static sceneManager instance;
+        return instance;
+    }
+
+    sceneManager(const sceneManager&) = delete;
+    sceneManager& operator=(const sceneManager&) = delete;
 
     ~sceneManager() {
         for (auto& pair : scenes) {

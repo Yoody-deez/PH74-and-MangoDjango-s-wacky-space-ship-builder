@@ -1,52 +1,79 @@
 #pragma once
 #include <iostream>
 #include "../system/scene.h"
+#include "../system/sceneManager.h"
+#include "../ui/imageControl.h"
 #include "../ui/label.h"
 #include "../ui/button.h"
 #include "../core/engine.h"
+#include "../graphics/texture.h"
 
 class creditsScene : public scene {
 private:
+    imageControl bg;
+
+    texture* titleTex;
+    texture* textTex1;
+    texture* textTex2;
+    texture* textTex3;
+    texture* backTex;
+
     label titleLabel;
-    label creditsTextLabel;
+    label creditsLine1;
+    label creditsLine2;
+    label creditsLine3;
     button btnBack;
 
 public:
-    creditsScene(font* gameFont)
+    creditsScene(texture* bgTexture, font* gameFont)
         : scene("CreditsScene"),
-          titleLabel("Crédits", gameFont, Vector2(1.0f, 1.0f)),
-          creditsTextLabel("Développé avec amour\nEngine 3D C++ / OpenGL", gameFont, Vector2(1.0f, 1.0f)),
-          btnBack("Retour", gameFont, Vector2(100.0f, 100.0f), Vector2(140.0f, 40.0f), Vector2(0,0), Vector2(0.2f,0.2f), Vector2(0.4f,0.4f), [this]() {
+          bg(bgTexture, true),
+          titleTex(new texture("assets/textures/text/credits.bmp")),
+          textTex1(new texture("assets/textures/text/creditText1.bmp")),
+          textTex2(new texture("assets/textures/text/creditText2.bmp")),
+          textTex3(new texture("assets/textures/text/creditText3.bmp")),
+          backTex(new texture("assets/textures/text/back.bmp")),
+          
+          titleLabel(titleTex, Vector2(100.0f, 480.0f), Vector2(400.0f, 70.0f)),
+          creditsLine1(textTex1, Vector2(100.0f, 360.0f), Vector2(500.0f, 50.0f)),
+          creditsLine2(textTex2, Vector2(100.0f, 300.0f), Vector2(500.0f, 50.0f)),
+          creditsLine3(textTex3, Vector2(100.0f, 240.0f), Vector2(500.0f, 50.0f)),
+          
+          btnBack(backTex, Vector2(100.0f, 100.0f), Vector2(140.0f, 40.0f), Vector2(0,0), Vector2(0.2f,0.2f), Vector2(0.4f,0.4f), [this]() {
               std::cout << "Action: Retour au menu principal" << std::endl;
-              // Plus tard : sceneManager::getInstance().switchTo("MainScene");
+              sceneManager::getInstance().switchTo("MainScene");
           })
     {
-        titleLabel.setPosition(Vector2(100.0f, 480.0f));
-        titleLabel.setSize(Vector2(300.0f, 60.0f));
+        bg.setPosition(Vector2(0.0f, 0.0f));
+        bg.setSize(Vector2(800.0f, 600.0f));
+    }
 
-        creditsTextLabel.setPosition(Vector2(100.0f, 300.0f));
-        creditsTextLabel.setSize(Vector2(400.0f, 120.0f));
+    ~creditsScene() override {
+        delete titleTex;
+        delete textTex1;
+        delete textTex2;
+        delete textTex3;
+        delete backTex;
     }
 
     void load() override {
         std::cout << "Chargement de la scène : " << title << std::endl;
-
         eventManager.attach(&btnBack);
     }
 
     void unload() override {
         std::cout << "Déchargement de la scène : " << title << std::endl;
-
         eventManager.detach(&btnBack);
     }
 
-    void update(float dt) override {
-    
-    }
+    void update(float dt) override {}
 
     void render() override {
+        bg.render();
         titleLabel.render();
-        creditsTextLabel.render();
+        creditsLine1.render();
+        creditsLine2.render();
+        creditsLine3.render();
         btnBack.render();
     }
 };

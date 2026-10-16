@@ -3,10 +3,9 @@
 #include <functional>
 #include <glad/gl.h>
 #include "../system/event.h"
-#include "../graphics/ResourceManager.h"
+#include "../graphics/texture.h"
 #include "visualControl.h"
 #include "label.h"
-#include "../graphics/font.h"
 
 class button : public visualControl {
 private:
@@ -31,13 +30,14 @@ private:
     }
 
 public:
-    button(const std::string& title, font* font, Vector2 pos, Vector2 s, 
+    button(texture* btnTex, Vector2 pos, Vector2 s, 
            Vector2 bCol, Vector2 bgCol, Vector2 hCol, std::function<void()> callback)
-        : titleLabel(title, font, {1.0f, 1.0f}), borderColor(bCol), 
+        : titleLabel(btnTex, pos, s), borderColor(bCol), 
           bgColor(bgCol), hoverColor(hCol), isHovered(false), onClick(callback), VAO(0), VBO(0), buttonTextureID(0) {
         position = pos;
         size = s;
-        titleLabel.setPosition({pos.x + 15.0f, pos.y + 12.0f});
+        titleLabel.setPosition(pos);
+        titleLabel.setSize(s);
 
         buttonTextureID = createSolidTexture(0xFF111111);
 
@@ -75,10 +75,13 @@ public:
     }
 
     void onEvent(Event e) override {
-        if (e.type == Event::Type::MOUSE_MOVE) {
+        if (e.type == Event::Type::MOUSE_MOVE || e.type == Event::Type::MOUSE_CLICK) {
+            float correctedMouseY = 600.0f - e.mousePos.y;
+
             isHovered = (e.mousePos.x >= position.x && e.mousePos.x <= position.x + size.x &&
-                         e.mousePos.y >= position.y && e.mousePos.y <= position.y + size.y);
+                         correctedMouseY >= position.y && correctedMouseY <= position.y + size.y);
         }
+        
         if (e.type == Event::Type::MOUSE_CLICK && e.button == 1 && isHovered) {
             if (onClick) onClick();
         }

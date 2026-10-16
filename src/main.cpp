@@ -68,14 +68,14 @@ int WinMain(int argc, char* argv[])
             glUniformMatrix4fv(projLoc, 1, GL_FALSE, orthoProj);
         }
 
-    sceneManager sceneMgr;
+    auto& sceneMgr = sceneManager::getInstance();
 
     font* gameFont = new font("assets/fonts/font.png");
     texture* bgTexture = new texture("assets/textures/Skyboxes/skybox-space.png");
 
     sceneMgr.addScene("MainScene", new mainScene(bgTexture, gameFont));
     sceneMgr.addScene("SettingsScene", new settingsScene(bgTexture, gameFont));
-    sceneMgr.addScene("CreditsScene", new creditsScene(gameFont));
+    sceneMgr.addScene("CreditsScene", new creditsScene(bgTexture,gameFont));
 
     sceneMgr.switchTo("MainScene");
 

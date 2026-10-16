@@ -20,7 +20,7 @@ public:
         }
 
         SDL_Surface* formattedSurface = SDL_ConvertSurface(surface, SDL_PIXELFORMAT_RGBA32);
-        SDL_DestroySurface(surface); 
+        SDL_DestroySurface(surface);  
 
         if (!formattedSurface) {
             std::cerr << "Erreur lors de la conversion de la surface (" << path << "): " << SDL_GetError() << std::endl;
@@ -29,6 +29,23 @@ public:
 
         width = formattedSurface->w;
         height = formattedSurface->h;
+
+        int pitch = formattedSurface->pitch; 
+        void* pixels = formattedSurface->pixels;
+        
+        char* tempRow = new char[pitch];
+        char* row1 = (char*)pixels;
+        char* row2 = (char*)pixels + (height - 1) * pitch;
+
+        for (int i = 0; i < height / 2; ++i) {
+            memcpy(tempRow, row1, pitch);
+            memcpy(row1, row2, pitch);
+            memcpy(row2, tempRow, pitch);
+
+            row1 += pitch;
+            row2 -= pitch;
+        }
+        delete[] tempRow;
 
         glGenTextures(1, &id);
         glBindTexture(GL_TEXTURE_2D, id);
@@ -46,6 +63,7 @@ public:
 
         SDL_DestroySurface(formattedSurface);
     }
+
     texture(unsigned int existingId, int w, int h) 
         : resource("glyph"), id(existingId), width(w), height(h) {}
 
