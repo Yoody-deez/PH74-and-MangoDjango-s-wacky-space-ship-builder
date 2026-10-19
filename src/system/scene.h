@@ -10,7 +10,7 @@ protected:
     EventManager eventManager;
 
 public:
-    Scene(const string& t) : title(t) {}
+    Scene(const string& t);
     virtual ~Scene() = default;
 
     virtual void load() = 0;
@@ -18,6 +18,6 @@ public:
     virtual void update(float dt) = 0;
     virtual void render() = 0;
 
-    EventManager& getEventManager() { return eventManager; }
-    string getTitle() const { return title; }
+    EventManager& getEventManager();
+    string getTitle() const;
 };

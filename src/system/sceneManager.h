@@ -10,67 +10,25 @@ private:
     unordered_map<string, Scene*> scenes;
     Scene* currentScene;
 
-    SceneManager() : currentScene(nullptr) {}
+    SceneManager();
 
 public:
-    static SceneManager& getInstance() {
-        static SceneManager instance;
-        return instance;
-    }
+    static SceneManager& getInstance();
 
     SceneManager(const SceneManager&) = delete;
     SceneManager& operator=(const SceneManager&) = delete;
 
-    ~SceneManager() {
-        for (auto& pair : scenes) {
-            delete pair.second;
-        }
-        scenes.clear();
-    }
+    ~SceneManager();
 
-    void addScene(const string& title, Scene* scene) {
-        if (scene && scenes.find(title) == scenes.end()) {
-            scenes[title] = scene;
-        }
-    }
+    void addScene(const string& title, Scene* scene);
 
-    void removeScene(const string& title) {
-        auto it = scenes.find(title);
-        if (it != scenes.end()) {
-            if (currentScene == it->second) {
-                currentScene->unload();
-                currentScene = nullptr;
-            }
-            delete it->second;
-            scenes.erase(it);
-        }
-    }
+    void removeScene(const string& title);
 
-    void switchTo(const string& title) {
-        auto it = scenes.find(title);
-        if (it != scenes.end()) {
-            if (currentScene) {
-                currentScene->unload();
-            }
-            currentScene = it->second;
-            currentScene->load();
-            cout << "Changement de scène vers : " << title << endl;
-        } else {
-            cerr << "ERREUR::SceneManager::SCENE_INTROUVABLE : " << title << endl;
-        }
-    }
+    void switchTo(const string& title);
 
-    void update(float dt) {
-        if (currentScene) {
-            currentScene->update(dt);
-        }
-    }
+    void update(float dt);
 
-    void render() {
-        if (currentScene) {
-            currentScene->render();
-        }
-    }
+    void render();
 
-    Scene* getCurrentScene() const { return currentScene; }
+    Scene* getCurrentScene() const;
 };

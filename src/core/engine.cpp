@@ -8,8 +8,8 @@ Engine::~Engine() {
 		stop();
 }
 
-Engine::Engine(const Engine&) = delete;
-Engine& Engine::operator=(const Engine&) = delete;
+/*Engine::Engine(const Engine&) = delete;
+Engine& Engine::operator=(const Engine&) = delete;*/
 
 Engine& Engine::getInstance() {
 		static Engine instance;

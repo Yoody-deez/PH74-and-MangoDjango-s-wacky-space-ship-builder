@@ -8,9 +8,6 @@ SceneManager& SceneManager::getInstance() {
 		return instance;
 }
 
-SceneManager::SceneManager(const SceneManager&) = delete;
-SceneManager& SceneManager::operator=(const SceneManager&) = delete;
-
 SceneManager::~SceneManager() {
 		for (auto& pair : scenes) {
 				delete pair.second;
