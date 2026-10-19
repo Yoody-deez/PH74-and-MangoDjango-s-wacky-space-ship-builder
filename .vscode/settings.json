@@ -14,6 +14,5 @@
   "files.exclude": {
     "AGENTS.md": true,
     "CLAUDE.md": true,
-    ".vscode": true,
   }
 }

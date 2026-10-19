@@ -1,75 +1,34 @@
 #pragma once
 #include <string>
 #include <unordered_map>
-#include <iostream>
 #include "Scene.h"
 
-class sceneManager {
-private:
-    std::unordered_map<std::string, scene*> scenes;
-    scene* currentScene;
+using namespace std;
 
-    sceneManager() : currentScene(nullptr) {}
+class SceneManager {
+private:
+    unordered_map<string, Scene*> scenes;
+    Scene* currentScene;
+
+    SceneManager();
 
 public:
-    static sceneManager& getInstance() {
-        static sceneManager instance;
-        return instance;
-    }
+    static SceneManager& getInstance();
 
-    sceneManager(const sceneManager&) = delete;
-    sceneManager& operator=(const sceneManager&) = delete;
+    SceneManager(const SceneManager&) = delete;
+    SceneManager& operator=(const SceneManager&) = delete;
 
-    ~sceneManager() {
-        for (auto& pair : scenes) {
-            delete pair.second;
-        }
-        scenes.clear();
-    }
+    ~SceneManager();
 
-    void addScene(const std::string& title, scene* scene) {
-        if (scene && scenes.find(title) == scenes.end()) {
-            scenes[title] = scene;
-        }
-    }
+    void addScene(const string& title, Scene* scene);
 
-    void removeScene(const std::string& title) {
-        auto it = scenes.find(title);
-        if (it != scenes.end()) {
-            if (currentScene == it->second) {
-                currentScene->unload();
-                currentScene = nullptr;
-            }
-            delete it->second;
-            scenes.erase(it);
-        }
-    }
+    void removeScene(const string& title);
 
-    void switchTo(const std::string& title) {
-        auto it = scenes.find(title);
-        if (it != scenes.end()) {
-            if (currentScene) {
-                currentScene->unload();
-            }
-            currentScene = it->second;
-            currentScene->load();
-            std::cout << "Changement de scène vers : " << title << std::endl;
-        } else {
-            std::cerr << "ERREUR::SCENEMANAGER::SCENE_INTROUVABLE : " << title << std::endl;
-        }
-    }
+    void switchTo(const string& title);
 
-    void update(float dt) {
-        if (currentScene) {
-            currentScene->update(dt);
-        }
-    }
+    void update(float dt);
 
-    void render() {
-        if (currentScene) {
-            currentScene->render();
-        }
-    }
+    void render();
 
-    scene* getCurrentScene() const { return currentScene; }
+    Scene* getCurrentScene() const;
 };

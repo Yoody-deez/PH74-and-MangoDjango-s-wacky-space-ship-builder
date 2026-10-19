@@ -3,20 +3,16 @@
 #include "resource.h"
 #include "texture.h"
 
-class font : public resource {
+using namespace std;
+
+class Font : public Resource {
 private:
-    texture* atlasTexture;
+    Texture* atlasTexture;
 
 public:
-    font(const std::string& path) : resource(path), atlasTexture(nullptr) {
-        atlasTexture = new texture(path, true);
-    }
+    Font(const string& path);
 
-    ~font() override {
-        delete atlasTexture;
-    }
+    ~Font() override;
 
-    texture* getAtlas() const {
-        return atlasTexture;
-    }
+    Texture* getAtlas() const;
 };

@@ -2,20 +2,22 @@
 #include <string>
 #include "EventManager.h"
 
-class scene {
+using namespace std;
+
+class Scene {
 protected:
     std::string title;
     EventManager eventManager;
 
 public:
-    scene(const std::string& t) : title(t) {}
-    virtual ~scene() = default;
+    Scene(const string& t);
+    virtual ~Scene() = default;
 
     virtual void load() = 0;
     virtual void unload() = 0;
     virtual void update(float dt) = 0;
     virtual void render() = 0;
 
-    EventManager& getEventManager() { return eventManager; }
-    std::string getTitle() const { return title; }
+    EventManager& getEventManager();
+    string getTitle() const;
 };

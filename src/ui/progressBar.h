@@ -4,7 +4,7 @@
 #include "../graphics/ResourceManager.h"
 #include "visualControl.h"
 
-class progressBar : public visualControl {
+class ProgressBar : public VisualControl {
 private:
     float minVal;
     float currentVal;
@@ -14,15 +14,9 @@ private:
     Vector2 progressColor;
 
 public:
-    progressBar(float min, float max, Vector2 bCol, Vector2 bgCol, Vector2 pCol)
-        : minVal(min), maxVal(max), currentVal(min), borderColor(bCol), bgColor(bgCol), progressColor(pCol) {}
+    ProgressBar(float min, float max, Vector2 bCol, Vector2 bgCol, Vector2 pCol);
 
-    void setProgress(float val) {
-        if (val < minVal) currentVal = minVal;
-        else if (val > maxVal) currentVal = maxVal;
-        else currentVal = val;
-    }
+    void setProgress(float val);
 
-    void render() override {
-    }
+    void render() override;
 };

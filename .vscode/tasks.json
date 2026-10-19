@@ -14,6 +14,11 @@
                 "/Fe${workspaceFolder}/build/program.exe",
                 "/Fo${workspaceFolder}/build/",
                 "${workspaceFolder}/src/*.cpp",
+                "${workspaceFolder}/src/graphics/*.cpp",
+                "${workspaceFolder}/src/core/*.cpp",
+                "${workspaceFolder}/src/scenes/*.cpp",
+                "${workspaceFolder}/src/system/*.cpp",
+                "${workspaceFolder}/src/ui/*.cpp",
                 "/link",
                 "/libpath:${workspaceFolder}/build/lib",
                 "opengl32.lib",
@@ -38,6 +43,7 @@
         },
         {
             "type": "cppbuild",
+
             "label": "(macOS) Compiler",
             "command": "g++",
             "args": [
