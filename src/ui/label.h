@@ -69,67 +69,57 @@ public:
         GLint currentShader = 0;
         glGetIntegerv(GL_CURRENT_PROGRAM, &currentShader);
 
-        if (currentShader != 0) {
-            glUniform2f(glGetUniformLocation(currentShader, "uPosition"), position.x, position.y);
-            glUniform2f(glGetUniformLocation(currentShader, "uSize"), size.x, size.y);
-        }
-
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         if (labelTexture) {
+            if (currentShader != 0) {
+                glUniform2f(glGetUniformLocation(currentShader, "uPosition"), position.x, position.y);
+                glUniform2f(glGetUniformLocation(currentShader, "uSize"), size.x, size.y);
+            }
             glActiveTexture(GL_TEXTURE0);
             labelTexture->bind();
-
             glBindVertexArray(VAO);
             glDrawArrays(GL_TRIANGLES, 0, 6);
             glBindVertexArray(0);
-
             labelTexture->unbind();
         } 
-        else if (textFont && textFont->getAtlas() && !text.empty()) {
-            float cursorX = position.x;
-            float cursorY = position.y;
-            float charWidth = 12.0f;  
-            float charHeight = 20.0f; 
+        else if (textFont && textFont->isLoaded() && !text.empty()) {
+            if (currentShader != 0) {
+                glUniform2f(glGetUniformLocation(currentShader, "uPosition"), 0.0f, 0.0f);
+                glUniform2f(glGetUniformLocation(currentShader, "uSize"), 1.0f, 1.0f);
+            }
 
-            glActiveTexture(GL_TEXTURE0);
-            textFont->getAtlas()->bind();
+            textFont->bindAtlas();
             glBindVertexArray(VAO);
 
+            float x = position.x;
+            float y = position.y + size.y;  
+
             for (char c : text) {
-                unsigned char ascii = (unsigned char)c;
-                int col = ascii % 16;
-                int row = ascii / 16;
+                if (c >= 32 && c < 128) {
+                    stbtt_aligned_quad q;
+                    stbtt_GetBakedQuad(textFont->getBakedChars(), 512, 512, c - 32, &x, &y, &q, 1);
 
-                float u0 = (float)col / 16.0f;
-                float u1 = (float)(col + 1) / 16.0f;
-                float v_top = 1.0f - (float)row / 16.0f;
-                float v_bottom = 1.0f - (float)(row + 1) / 16.0f;
+                    float vertices[] = {
+                        q.x0, q.y1,  q.s0, q.t0,  
+                        q.x0, q.y0,  q.s0, q.t1,    
+                        q.x1, q.y0,  q.s1, q.t1,  
 
-                float vertices[] = {
-                    0.0f, 1.0f,  u0, v_bottom, 
-                    0.0f, 0.0f,  u0, v_top,    
-                    1.0f, 0.0f,  u1, v_top,
+                        q.x0, q.y1,  q.s0, q.t0,
+                        q.x1, q.y0,  q.s1, q.t1,
+                        q.x1, q.y1,  q.s1, q.t0    
+                    };
 
-                    0.0f, 1.0f,  u0, v_bottom,
-                    1.0f, 0.0f,  u1, v_top,
-                    1.0f, 1.0f,  u1, v_bottom
-                };
+                    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+                    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
 
-                glBindBuffer(GL_ARRAY_BUFFER, VBO);
-                glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
-
-                if (currentShader != 0) {
-                    glUniform2f(glGetUniformLocation(currentShader, "uPosition"), cursorX, cursorY);
-                    glUniform2f(glGetUniformLocation(currentShader, "uSize"), charWidth, charHeight);
+                    glDrawArrays(GL_TRIANGLES, 0, 6);
                 }
-
-                glDrawArrays(GL_TRIANGLES, 0, 6);
-                cursorX += charWidth * 0.85f; 
             }
+
             glBindVertexArray(0);
-            textFont->getAtlas()->unbind();
+            textFont->unbindAtlas();
         }
     }
 };

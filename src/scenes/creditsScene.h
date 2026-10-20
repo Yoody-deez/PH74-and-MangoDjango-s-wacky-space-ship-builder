@@ -7,15 +7,12 @@
 #include "../ui/button.h"
 #include "../core/engine.h"
 #include "../graphics/texture.h"
+#include "../graphics/font.h"
 
 class creditsScene : public scene {
 private:
     imageControl bg;
 
-    texture* titleTex;
-    texture* textTex1;
-    texture* textTex2;
-    texture* textTex3;
     texture* backTex;
 
     label titleLabel;
@@ -23,23 +20,20 @@ private:
     label creditsLine2;
     label creditsLine3;
     button btnBack;
+    label btnBackLabel;
 
 public:
     creditsScene(texture* bgTexture, font* gameFont)
         : scene("CreditsScene"),
           bg(bgTexture, true),
-          titleTex(new texture("assets/textures/text/credits.bmp")),
-          textTex1(new texture("assets/textures/text/creditText1.bmp")),
-          textTex2(new texture("assets/textures/text/creditText2.bmp")),
-          textTex3(new texture("assets/textures/text/creditText3.bmp")),
-          backTex(new texture("assets/textures/text/back.bmp")),
           
-          titleLabel(titleTex, Vector2(100.0f, 480.0f), Vector2(400.0f, 70.0f)),
-          creditsLine1(textTex1, Vector2(100.0f, 360.0f), Vector2(500.0f, 50.0f)),
-          creditsLine2(textTex2, Vector2(100.0f, 300.0f), Vector2(500.0f, 50.0f)),
-          creditsLine3(textTex3, Vector2(100.0f, 240.0f), Vector2(500.0f, 50.0f)),
+          titleLabel("CREDITS", gameFont, Vector2(100.0f, 480.0f)),
+          creditsLine1("Par l'magination douteuse de ", gameFont, Vector2(100.0f, 360.0f)),
+          creditsLine2("Malik Goundiam et le génis de ", gameFont, Vector2(100.0f, 300.0f)),
+          creditsLine3("Yannick Chauvette", gameFont, Vector2(100.0f, 240.0f)),
+          btnBackLabel("RETOUR", gameFont, Vector2(100.0f, 100.0f)), 
           
-          btnBack(backTex, Vector2(100.0f, 100.0f), Vector2(140.0f, 40.0f), Vector2(0,0), Vector2(0.2f,0.2f), Vector2(0.4f,0.4f), [this]() {
+          btnBack(nullptr, Vector2(100.0f, 100.0f), Vector2(140.0f, 40.0f), Vector2(0,0), Vector2(0.2f,0.2f), Vector2(0.4f,0.4f), [this]() {
               std::cout << "Action: Retour au menu principal" << std::endl;
               sceneManager::getInstance().switchTo("MainScene");
           })
@@ -49,11 +43,6 @@ public:
     }
 
     ~creditsScene() override {
-        delete titleTex;
-        delete textTex1;
-        delete textTex2;
-        delete textTex3;
-        delete backTex;
     }
 
     void load() override {
@@ -75,5 +64,6 @@ public:
         creditsLine2.render();
         creditsLine3.render();
         btnBack.render();
+        btnBackLabel.render();
     }
 };

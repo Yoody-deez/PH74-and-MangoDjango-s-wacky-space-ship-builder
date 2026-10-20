@@ -62,20 +62,17 @@ int WinMain(int argc, char* argv[])
     shaderProgram.use();
 
 
-    matrix4x4 orthoProj = matrix4x4::ortho(0.0f, (float)WINDOW_WIDTH, (float)WINDOW_HEIGHT, 0.0f, -1.0f, 1.0f);
-        int projLoc = shaderProgram.getUniformLocation("uProjection");
-        if (projLoc != -1) {
-            glUniformMatrix4fv(projLoc, 1, GL_FALSE, orthoProj);
-        }
+matrix4x4 orthoProj = matrix4x4::ortho(0.0f, (float)WINDOW_WIDTH, 0.0f, (float)WINDOW_HEIGHT, -1.0f, 1.0f);        int projLoc = shaderProgram.getUniformLocation("uProjection");
+    if (projLoc != -1) {
+         glUniformMatrix4fv(projLoc, 1, GL_FALSE, orthoProj);
+    }
 
     auto& sceneMgr = sceneManager::getInstance();
-
-    font* gameFont = new font("assets/fonts/font.png");
-    texture* bgTexture = new texture("assets/textures/Skyboxes/skybox-space.png");
+    font* gameFont = new font("assets/fonts/VCR_OSD_MONO_1.001.ttf");    texture* bgTexture = new texture("assets/textures/Skyboxes/skybox-space.png");
 
     sceneMgr.addScene("MainScene", new mainScene(bgTexture, gameFont));
     sceneMgr.addScene("SettingsScene", new settingsScene(bgTexture, gameFont));
-    sceneMgr.addScene("CreditsScene", new creditsScene(bgTexture,gameFont));
+    sceneMgr.addScene("CreditsScene", new creditsScene(bgTexture, gameFont));
 
     sceneMgr.switchTo("MainScene");
 

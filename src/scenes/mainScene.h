@@ -7,20 +7,19 @@
 #include "../ui/button.h"
 #include "../core/engine.h"
 #include "../graphics/texture.h"
+#include "../graphics/font.h"
 #include "../core/matrix4x4.h"
 
 class mainScene : public scene {
 private:
     imageControl bg;
     
-    texture* titleTex;
-    texture* playTex;
-    texture* settingsTex;
-    texture* creditsTex;
-    texture* quitTex;
-
     label titleLabel;
-    
+    label btnStartLabel;
+    label btnSettingsLabel;
+    label btnCreditsLabel;
+    label btnQuitLabel;
+
     button btnStart;
     button btnSettings;
     button btnCredits;
@@ -30,27 +29,24 @@ public:
     mainScene(texture* bgTexture, font* gameFont) 
         : scene("MainScene"),
           bg(bgTexture, true),
-          titleTex(new texture("assets/textures/text/titre.bmp")),
-          playTex(new texture("assets/textures/text/play.bmp")),
-          settingsTex(new texture("assets/textures/text/settings.bmp")),
-          creditsTex(new texture("assets/textures/text/credits.bmp")),
-          quitTex(new texture("assets/textures/text/quit.bmp")),
-          
-          titleLabel(titleTex, Vector2(100.0f, 450.0f), Vector2(600.0f, 60.0f)),
-          
-          btnStart(playTex, Vector2(100.0f, 300.0f), Vector2(200.0f, 50.0f), Vector2(0.0f, 0.0f), Vector2(0.2f, 0.2f), Vector2(0.4f, 0.4f), [this]() {
+          titleLabel("Wacky Space SHip Builder", gameFont, Vector2(100.0f, 450.0f)),
+          btnStartLabel("JOUER", gameFont, Vector2(100.0f, 300.0f)),
+          btnSettingsLabel("PARAMETRES", gameFont, Vector2(100.0f, 240.0f)),
+          btnCreditsLabel("CREDITS", gameFont, Vector2(100.0f, 180.0f)),
+          btnQuitLabel("QUITTER", gameFont, Vector2(100.0f, 120.0f)),
+
+          btnStart(nullptr, Vector2(100.0f, 300.0f), Vector2(200.0f, 50.0f), Vector2(0.0f, 0.0f), Vector2(0.2f, 0.2f), Vector2(0.4f, 0.4f), [this]() {
               std::cout << "Action: Démarrer le jeu" << std::endl;
-              // Exemple : sceneManager::getInstance().switchTo("GameScene");
           }),
-          btnSettings(settingsTex, Vector2(100.0f, 240.0f), Vector2(200.0f, 50.0f), Vector2(0.0f, 0.0f), Vector2(0.2f, 0.2f), Vector2(0.4f, 0.4f), [this]() {
+          btnSettings(nullptr, Vector2(100.0f, 240.0f), Vector2(200.0f, 50.0f), Vector2(0.0f, 0.0f), Vector2(0.2f, 0.2f), Vector2(0.4f, 0.4f), [this]() {
               std::cout << "Action: Ouvrir les paramètres" << std::endl;
               sceneManager::getInstance().switchTo("SettingsScene");
           }),
-          btnCredits(creditsTex, Vector2(100.0f, 180.0f), Vector2(200.0f, 50.0f), Vector2(0.0f, 0.0f), Vector2(0.2f, 0.2f), Vector2(0.4f, 0.4f), [this]() {
+          btnCredits(nullptr, Vector2(100.0f, 180.0f), Vector2(200.0f, 50.0f), Vector2(0.0f, 0.0f), Vector2(0.2f, 0.2f), Vector2(0.4f, 0.4f), [this]() {
               std::cout << "Action: Afficher les crédits" << std::endl;
               sceneManager::getInstance().switchTo("CreditsScene");
           }),
-          btnQuit(quitTex, Vector2(100.0f, 120.0f), Vector2(200.0f, 50.0f), Vector2(0.0f, 0.0f), Vector2(0.2f, 0.2f), Vector2(0.4f, 0.4f), [this]() {
+          btnQuit(nullptr, Vector2(100.0f, 120.0f), Vector2(200.0f, 50.0f), Vector2(0.0f, 0.0f), Vector2(0.2f, 0.2f), Vector2(0.4f, 0.4f), [this]() {
               std::cout << "Action: Quitter l'application" << std::endl;
               Engine::getInstance().stop();
               SDL_Event quitEvent;
@@ -62,13 +58,7 @@ public:
         bg.setSize({800.0f, 600.0f});
     }
 
-    ~mainScene() override {
-        delete titleTex;
-        delete playTex;
-        delete settingsTex;
-        delete creditsTex;
-        delete quitTex;
-    }
+    ~mainScene() override {}
 
     void load() override {
         std::cout << "Chargement de la scène : " << title << std::endl;
@@ -99,9 +89,17 @@ public:
 
         bg.render();
         titleLabel.render();
+        
         btnStart.render();
+        btnStartLabel.render(); 
+
         btnSettings.render();
+        btnSettingsLabel.render();
+
         btnCredits.render();
+        btnCreditsLabel.render();
+
         btnQuit.render();
+        btnQuitLabel.render();
     }
 };
