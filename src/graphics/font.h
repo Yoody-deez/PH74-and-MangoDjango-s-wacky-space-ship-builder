@@ -1,18 +1,31 @@
 #pragma once
 #include <string>
+#include <glad/gl.h>
 #include "resource.h"
-#include "texture.h"
+
+#define STB_TRUETYPE_IMPLEMENTATION
+#include "stb_truetype.h"
 
 using namespace std;
 
 class Font : public Resource {
 private:
-    Texture* atlasTexture;
-
+    unsigned char* ttfBuffer;
+    stbtt_fontinfo fontInfo;
+    stbtt_bakedchar cdata[96];
+    unsigned int atlasTextureID;
+    int atlasWidth;
+    int atlasHeight;
 public:
-    Font(const string& path);
+    Font(const std::string& path);
 
     ~Font() override;
 
-    Texture* getAtlas() const;
+    void bindAtlas() const;
+
+    void unbindAtlas() const;
+
+    const stbtt_bakedchar* getBakedChars() const;
+
+    bool isLoaded() const;
 };

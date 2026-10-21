@@ -6,6 +6,8 @@
 #include "../graphics/texture.h"
 #include "../graphics/font.h"
 
+using namespace std;
+
 class Label : public VisualControl {
 private:
     string text;
@@ -16,14 +18,14 @@ private:
 public:
     Label(Texture* tex, Vector2 pos, Vector2 s);
 
-    Label(const std::string& t, Font* f, Vector2 pos) ;
+    Label(const string& t, Font* f, Vector2 pos) ;
 
     void initQuad();
 
     ~Label();
 
     void setText(const string& newText);
-    const std::string& getText() const;
+    const string& getText() const;
     void setTexture(Texture* tex);
 
     void render() override;

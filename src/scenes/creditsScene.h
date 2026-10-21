@@ -6,6 +6,7 @@
 #include "../ui/button.h"
 #include "../core/engine.h"
 #include "../graphics/texture.h"
+#include "../graphics/font.h"
 
 using namespace std;
 
@@ -13,10 +14,6 @@ class CreditsScene : public Scene {
 private:
     ImageControl bg;
 
-    Texture* titleTex;
-    Texture* textTex1;
-    Texture* textTex2;
-    Texture* textTex3;
     Texture* backTex;
 
     Label titleLabel;
@@ -24,6 +21,7 @@ private:
     Label creditsLine2;
     Label creditsLine3;
     Button btnBack;
+    Label btnBackLabel;
 
 public:
     CreditsScene(Texture* bgTexture, Font* gameFont);

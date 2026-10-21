@@ -12,7 +12,7 @@ unsigned int Button::createSolidTexture(unsigned int colorHex) {
 }
 
 Button::Button(Texture* btnTex, Vector2 pos, Vector2 s, 
-				Vector2 bCol, Vector2 bgCol, Vector2 hCol, std::function<void()> callback)
+				Vector2 bCol, Vector2 bgCol, Vector2 hCol, function<void()> callback)
 		: titleLabel(btnTex, pos, s), borderColor(bCol), 
 			bgColor(bgCol), hoverColor(hCol), isHovered(false), onClick(callback), VAO(0), VBO(0), buttonTextureID(0) {
 		position = pos;

@@ -7,7 +7,7 @@ using namespace std;
 
 class Settings {
 public:
-    std::map<string, string> data;
+    map<string, string> data;
 
     bool load(const string& filePath);
 

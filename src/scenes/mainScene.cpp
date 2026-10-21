@@ -3,29 +3,26 @@
 
 MainScene::MainScene(Texture* bgTexture, Font* gameFont) 
 		: Scene("MainScene"),
-			bg(bgTexture, true),
-			titleTex(new Texture("assets/textures/text/titre.bmp")),
-			playTex(new Texture("assets/textures/text/play.bmp")),
-			settingsTex(new Texture("assets/textures/text/settings.bmp")),
-			creditsTex(new Texture("assets/textures/text/credits.bmp")),
-			quitTex(new Texture("assets/textures/text/quit.bmp")),
-			
-			titleLabel(titleTex, Vector2(100.0f, 450.0f), Vector2(600.0f, 60.0f)),
-			
-			btnStart(playTex, Vector2(100.0f, 300.0f), Vector2(200.0f, 50.0f), Vector2(0.0f, 0.0f), Vector2(0.2f, 0.2f), Vector2(0.4f, 0.4f), [this]() {
-					cout << "Action: Démarrer le jeu" << endl;
-					// Exemple : sceneManager::getInstance().switchTo("GameScene");
+		bg(bgTexture, true),
+			titleLabel("Wacky Space SHip Builder", gameFont, Vector2(100.0f, 450.0f)),
+			btnStartLabel("JOUER", gameFont, Vector2(100.0f, 300.0f)),
+			btnSettingsLabel("PARAMETRES", gameFont, Vector2(100.0f, 240.0f)),
+			btnCreditsLabel("CREDITS", gameFont, Vector2(100.0f, 180.0f)),
+			btnQuitLabel("QUITTER", gameFont, Vector2(100.0f, 120.0f)),
+
+			btnStart(nullptr, Vector2(100.0f, 300.0f), Vector2(200.0f, 50.0f), Vector2(0.0f, 0.0f), Vector2(0.2f, 0.2f), Vector2(0.4f, 0.4f), [this]() {
+					std::cout << "Action: Démarrer le jeu" << std::endl;
 			}),
-			btnSettings(settingsTex, Vector2(100.0f, 240.0f), Vector2(200.0f, 50.0f), Vector2(0.0f, 0.0f), Vector2(0.2f, 0.2f), Vector2(0.4f, 0.4f), [this]() {
-					cout << "Action: Ouvrir les paramètres" << endl;
+			btnSettings(nullptr, Vector2(100.0f, 240.0f), Vector2(200.0f, 50.0f), Vector2(0.0f, 0.0f), Vector2(0.2f, 0.2f), Vector2(0.4f, 0.4f), [this]() {
+					std::cout << "Action: Ouvrir les paramètres" << std::endl;
 					SceneManager::getInstance().switchTo("SettingsScene");
 			}),
-			btnCredits(creditsTex, Vector2(100.0f, 180.0f), Vector2(200.0f, 50.0f), Vector2(0.0f, 0.0f), Vector2(0.2f, 0.2f), Vector2(0.4f, 0.4f), [this]() {
-					cout << "Action: Afficher les crédits" << endl;
+			btnCredits(nullptr, Vector2(100.0f, 180.0f), Vector2(200.0f, 50.0f), Vector2(0.0f, 0.0f), Vector2(0.2f, 0.2f), Vector2(0.4f, 0.4f), [this]() {
+					std::cout << "Action: Afficher les crédits" << std::endl;
 					SceneManager::getInstance().switchTo("CreditsScene");
 			}),
-			btnQuit(quitTex, Vector2(100.0f, 120.0f), Vector2(200.0f, 50.0f), Vector2(0.0f, 0.0f), Vector2(0.2f, 0.2f), Vector2(0.4f, 0.4f), [this]() {
-					cout << "Action: Quitter l'application" << endl;
+			btnQuit(nullptr, Vector2(100.0f, 120.0f), Vector2(200.0f, 50.0f), Vector2(0.0f, 0.0f), Vector2(0.2f, 0.2f), Vector2(0.4f, 0.4f), [this]() {
+					std::cout << "Action: Quitter l'application" << std::endl;
 					Engine::getInstance().stop();
 					SDL_Event quitEvent;
 					quitEvent.type = SDL_EVENT_QUIT;
@@ -36,13 +33,7 @@ MainScene::MainScene(Texture* bgTexture, Font* gameFont)
 		bg.setSize({800.0f, 600.0f});
 }
 
-MainScene::~MainScene() {
-		delete titleTex;
-		delete playTex;
-		delete settingsTex;
-		delete creditsTex;
-		delete quitTex;
-}
+MainScene::~MainScene() {}
 
 void MainScene::load() {
 		cout << "Chargement de la scène : " << title << endl;
@@ -73,8 +64,16 @@ void MainScene::render() {
 
 		bg.render();
 		titleLabel.render();
+		
 		btnStart.render();
+		btnStartLabel.render(); 
+
 		btnSettings.render();
+		btnSettingsLabel.render();
+
 		btnCredits.render();
+		btnCreditsLabel.render();
+
 		btnQuit.render();
+		btnQuitLabel.render();
 }

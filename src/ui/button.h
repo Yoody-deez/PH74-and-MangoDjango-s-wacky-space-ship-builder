@@ -24,7 +24,7 @@ private:
 
 public:
     Button(Texture* btnTex, Vector2 pos, Vector2 s, 
-           Vector2 bCol, Vector2 bgCol, Vector2 hCol, std::function<void()> callback);
+           Vector2 bCol, Vector2 bgCol, Vector2 hCol, function<void()> callback);
 
     ~Button() override;
 
