@@ -14,8 +14,8 @@ private:
     stbtt_fontinfo fontInfo;
     stbtt_bakedchar cdata[96];
     unsigned int atlasTextureID;
-    int atlasWidth;
-    int atlasHeight;
+    int atlasWidth; // Divergence
+    int atlasHeight; // Divergence
 public:
     Font(const std::string& path);
 

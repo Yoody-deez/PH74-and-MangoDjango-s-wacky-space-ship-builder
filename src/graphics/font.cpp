@@ -5,8 +5,8 @@
 
 
 Font::Font(const string& path) : Resource(path), ttfBuffer(nullptr), atlasTextureID(0) {
-  atlasWidth = 512;
-	atlasHeight = 512;      
+  atlasWidth = 512; // Divergence
+	atlasHeight = 512; // Divergence
 	ifstream file(path, ios::binary | ios::ate);
 		if (!file.is_open()) {
 				cout << "Erreur : Impossible d'ouvrir le fichier de police -> " << path << endl;
