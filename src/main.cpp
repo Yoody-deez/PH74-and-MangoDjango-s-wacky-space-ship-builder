@@ -64,13 +64,15 @@ int WinMain(int argc, char* argv[])
     shaderProgram.use();
 
 
-Matrix4x4 orthoProj = Matrix4x4::ortho(0.0f, (float)WINDOW_WIDTH, 0.0f, (float)WINDOW_HEIGHT, -1.0f, 1.0f);        int projLoc = shaderProgram.getUniformLocation("uProjection");
+    Matrix4x4 orthoProj = Matrix4x4::ortho(0.0f, (float)WINDOW_WIDTH, 0.0f, (float)WINDOW_HEIGHT, -1.0f, 1.0f);
+    int projLoc = shaderProgram.getUniformLocation("uProjection");
     if (projLoc != -1) {
          glUniformMatrix4fv(projLoc, 1, GL_FALSE, orthoProj);
     }
 
     auto& sceneMgr = SceneManager::getInstance();
-    Font* gameFont = new Font("assets/fonts/VCR_OSD_MONO_1.001.ttf");    Texture* bgTexture = new Texture("assets/textures/Skyboxes/skybox-space.png");
+    Font* gameFont = new Font("assets/fonts/VCR_OSD_MONO_1.001.ttf");
+    Texture* bgTexture = new Texture("assets/textures/Skyboxes/skybox-space.png");
 
     sceneMgr.addScene("MainScene", new MainScene(bgTexture, gameFont));
     sceneMgr.addScene("SettingsScene", new SettingsScene(bgTexture, gameFont));
