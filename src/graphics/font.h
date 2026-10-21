@@ -3,7 +3,6 @@
 #include <glad/gl.h>
 #include "resource.h"
 
-#define STB_TRUETYPE_IMPLEMENTATION
 #include "stb_truetype.h"
 
 using namespace std;

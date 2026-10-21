@@ -1,3 +1,4 @@
+#define STB_TRUETYPE_IMPLEMENTATION
 #include "font.h"
 #include <fstream>
 #include <iostream>
