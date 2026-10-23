@@ -31,36 +31,24 @@ public:
     }
 
     void onEvent(Event e) override {
-        if (e.type == Event::Type::MOUSE_CLICK && e.button == 1) {
-            float mouseY = e.mousePos.y;
+    if (e.type == Event::Type::MOUSE_CLICK && e.button == 1) {
+        float correctedMouseY = 600.0f - e.mousePos.y;
 
-            if (e.mousePos.x >= posRef.x && e.mousePos.x <= posRef.x + sizeRef.x &&
-                mouseY >= posRef.y && mouseY <= posRef.y + sizeRef.y) {
-                
-                if (e.mousePos.x < posRef.x + (sizeRef.x / 2.0f)) {
-                    if (currentIndex > 0) {
-                        currentIndex--;
-                    } else {
-                        currentIndex = (int)options.size() - 1;
-                    }
-                    std::cout << "Selector: Index précédent -> " << currentIndex << std::endl;
-                }
-                else {
-                    if (currentIndex < (int)options.size() - 1) {
-                        currentIndex++;
-                    } else {
-                        currentIndex = 0;
-                    }
-                    std::cout << "Selector: Index suivant -> " << currentIndex << std::endl;
-                }
+        if (e.mousePos.x >= posRef.x && e.mousePos.x <= posRef.x + sizeRef.x &&
+            correctedMouseY >= posRef.y && correctedMouseY <= posRef.y + sizeRef.y) {
+            
+            if (e.mousePos.x < posRef.x + (sizeRef.x / 2.0f)) {
+                currentIndex = (currentIndex > 0) ? currentIndex - 1 : (int)options.size() - 1;
+            } else {
+                currentIndex = (currentIndex < (int)options.size() - 1) ? currentIndex + 1 : 0;
+            }
 
-                if (!options.empty()) {
-                    optionLabel.setText(options[currentIndex]);
-                }
+            if (!options.empty()) {
+                optionLabel.setText(options[currentIndex]);
             }
         }
     }
-
+}
     void render() override {
         if (!options.empty()) {
             optionLabel.render();
