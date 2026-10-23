@@ -1,5 +1,5 @@
 #include "label.h"
-
+//TODO: Gérer les codes caractères UTF-8 pour prendre en charge les accents, ligne 87
 
 Label::Label(Texture* tex, Vector2 pos, Vector2 s) 
 		: text(""), textFont(nullptr), labelTexture(tex), VAO(0), VBO(0) {
@@ -50,6 +50,22 @@ Label::~Label() {
 
 void Label::setText(const string& newText) { text = newText; }
 const string& Label::getText() const { return text; }
+
+void Label::setTextID(const string& id)
+{
+    textID = id;
+    updateLocalizedText();
+}
+
+void Label::updateLocalizedText()
+{
+    if (!textID.empty())
+    {
+        /*text = LocalizationManager::getInstance()
+                   .getText(textID);*/
+    }
+}
+
 void Label::setTexture(Texture* tex) { labelTexture = tex; }
 
 void Label::render() {
@@ -83,6 +99,7 @@ void Label::render() {
 				float x = position.x;
 				float y = position.y + size.y;  
 
+				// TODO: Gérer les UTF-8
 				for (char c : text) {
 						if (c >= 32 && c < 128) {
 								stbtt_aligned_quad q;

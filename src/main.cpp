@@ -24,7 +24,7 @@ using namespace std;
 int WinMain(int argc, char* argv[])
 {
     if (!SDL_Init(SDL_INIT_VIDEO)) {
-        std::cerr << "Erreur SDL_Init: " << SDL_GetError() << std::endl;
+        cerr << "Erreur SDL_Init: " << SDL_GetError() << endl;
         return -1;
     }
 
@@ -42,12 +42,12 @@ int WinMain(int argc, char* argv[])
 
     Shader vs("shaders/vertexShader.vs", GL_VERTEX_SHADER);
     if (!vs.compile()) {
-        std::cerr << "Erreur de compilation du vertex shader !" << std::endl;
+        cerr << "Erreur de compilation du vertex shader !" << endl;
     }
 
     Shader fs("shaders/fragmentShader.fs", GL_FRAGMENT_SHADER);
     if (!fs.compile()) {
-        std::cerr << "Erreur de compilation du fragment shader !" << std::endl;
+        cerr << "Erreur de compilation du fragment shader !" << endl;
     }
 
     ShaderProgram shaderProgram;
@@ -55,7 +55,7 @@ int WinMain(int argc, char* argv[])
     shaderProgram.attach(&fs);
 
     if (!shaderProgram.link()) {
-        std::cerr << "Erreur de linkage du shader program !" << std::endl;
+        cerr << "Erreur de linkage du shader program !" << endl;
         SDL_DestroyWindow(sdlWin);
         SDL_Quit();
         return -1;

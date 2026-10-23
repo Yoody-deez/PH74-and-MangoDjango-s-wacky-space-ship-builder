@@ -13,10 +13,10 @@ SettingsScene::SettingsScene(Texture* bgTexture, Font* gameFont)
 					gameFont, Vector2(100.0f, 285.0f), Vector2(250.0f, 40.0f)),          
 			
 			btnApply(nullptr, Vector2(100.0f, 200.0f), Vector2(140.0f, 40.0f), Vector2(0,0), Vector2(0.2f,0.2f), Vector2(0.4f,0.4f), [this]() {
-					std::cout << "Action: Appliquer les paramètres (Index lang: " << langSelector.getCurrentIndex() << ")" << std::endl;
+					cout << "Action: Appliquer les paramètres (Index lang: " << langSelector.getCurrentIndex() << ")" << endl;
 			}),
 			btnBack(nullptr, Vector2(100.0f, 140.0f), Vector2(140.0f, 40.0f), Vector2(0,0), Vector2(0.2f,0.2f), Vector2(0.4f,0.4f), [this]() {
-					std::cout << "Action: Retour au menu principal" << std::endl;
+					cout << "Action: Retour au menu principal" << endl;
 					SceneManager::getInstance().switchTo("MainScene");
 			})
 {

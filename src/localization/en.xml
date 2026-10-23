@@ -1,0 +1,13 @@
+<Dictionary language="en">
+    <Text id="Main_SettingsButton">
+        Paramètres
+    </Text>
+
+    <Text id="Main_PlayButton">
+        Jouer
+    </Text>
+
+    <Text id="Credits_Back">
+        Retour
+    </Text>
+</Dictionary>

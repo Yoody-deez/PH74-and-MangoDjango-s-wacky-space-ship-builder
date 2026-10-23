@@ -1,0 +1,61 @@
+<Dictionary language="fr">
+    <Text id="Main_Title">
+        Wacky Space SHip Builder
+    </Text>
+
+    <Text id="Main_PlayButton">
+        JOUER
+    </Text>
+
+    <Text id="Main_SettingsButton">
+        PARAMETRES
+    </Text>
+
+    <Text id="Main_CreditsButton">
+        CREDITS
+    </Text>
+
+    <Text id="Main_QuitButton">
+        QUITTER
+    </Text>
+
+    <Text id="Credits_Title">
+        CREDITS
+    </Text>
+
+    <Text id="Credits_Line1">
+        Par l'imagination douteuse de 
+    </Text>
+
+    <Text id="Credits_Line2">
+        Malik Goundiam et le "génie" de 
+    </Text>
+
+    <Text id="Credits_Line3">
+        Yannick Chauvette
+    </Text>
+
+    <Text id="Credits_ReturnButton">
+        RETOUR
+    </Text>
+
+    <Text id="Settings_Title">
+        PARAMETRES
+    </Text>
+
+    <Text id="Settings_ApplyButton">
+        APPLIQUER
+    </Text>
+
+    <Text id="Settings_BackButton">
+        RETOUR
+    </Text>
+
+    <Text id="Settings_LanguageSelectorFR">
+        FRANCAIS
+    </Text>
+
+    <Text id="Settings_LanguageSelectorEN">
+        ANGLAIS
+    </Text>
+</Dictionary>
