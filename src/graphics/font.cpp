@@ -3,11 +3,7 @@
 #include <fstream>
 #include <iostream>
 
-
-
 Font::Font(const string& path) : Resource(path), ttfBuffer(nullptr), atlasTextureID(0) {
-  atlasWidth = 512; // Divergence
-	atlasHeight = 512; // Divergence
 	ifstream file(path, ios::binary | ios::ate);
 		if (!file.is_open()) {
 				cout << "Erreur : Impossible d'ouvrir le fichier de police -> " << path << endl;
@@ -32,13 +28,32 @@ Font::Font(const string& path) : Resource(path), ttfBuffer(nullptr), atlasTextur
 				return;
 		}
 
-		unsigned char* bitmap = new unsigned char[atlasWidth * atlasHeight];
+		unsigned char* bitmap = new unsigned char[ATLAS_WIDTH * ATLAS_HEIGHT];
 		// Taille de la police fixée à 32 pixels de haut
-		stbtt_BakeFontBitmap(ttfBuffer, 0, 32.0f, bitmap, atlasWidth, atlasHeight, 32, 96, cdata);
+		int result = stbtt_BakeFontBitmap(
+				ttfBuffer,
+				0,
+				32.0f,
+				bitmap,
+				ATLAS_WIDTH,
+				ATLAS_HEIGHT,
+				FIRST_CHAR,
+				NUM_CHARS,
+				cdata
+		);
+
+		if (result <= 0)
+		{
+				cout << "Erreur : Impossible de construire l'atlas de police." << endl; // Si cela ne fonctionne pas, essayer avec 1024 x 1024
+				delete[] bitmap;
+				delete[] ttfBuffer;
+				ttfBuffer = nullptr;
+				return;
+		}
 
 		glGenTextures(1, &atlasTextureID);
 		glBindTexture(GL_TEXTURE_2D, atlasTextureID);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, atlasWidth, atlasHeight, 0, GL_RED, GL_UNSIGNED_BYTE, bitmap);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, ATLAS_WIDTH, ATLAS_HEIGHT, 0, GL_RED, GL_UNSIGNED_BYTE, bitmap);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glBindTexture(GL_TEXTURE_2D, 0);

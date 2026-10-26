@@ -15,6 +15,17 @@ Label::Label(const string& t, Font* f, Vector2 pos)
 		initQuad();
 }
 
+Label::Label(const string& id, Font* f, Vector2 pos, bool localized) 
+		: text(""), textID(id), textFont(f), labelTexture(nullptr), VAO(0), VBO(0), isLocalized(localized) {
+		position = pos;
+		isLocalized = localized;
+		size = Vector2(100.0f, 30.0f);
+		initQuad();
+		if (isLocalized && !textID.empty()) {
+				updateLocalizedText();
+		}
+}
+
 void Label::initQuad() {
 		float vertices[] = {
 				0.0f, 1.0f,  0.0f, 1.0f,  
@@ -48,21 +59,29 @@ Label::~Label() {
 		if (VBO != 0) glDeleteBuffers(1, &VBO);
 }
 
-void Label::setText(const string& newText) { text = newText; }
+void Label::setText(const string& newText) { 
+		text = newText;
+		codepoints = DecodeUTF8(text); // Décodage du texte UTF-8 en points de code Unicode
+		/*
+				À noter: la plage actelle U+0020 à U+00FF ne couvre pas tous les caractères utilisés dans la langue française, donc certains caractères accentués peuvent ne pas s'afficher correctement. Il faudra peut-être étendre la plage de caractères supportée pour les inclure.
+				Exploration possible avec stbtt_PackFontRanges() pour inlcure uniquement les caractères qu'on veut utiliser.
+		*/
+}
 const string& Label::getText() const { return text; }
 
 void Label::setTextID(const string& id)
 {
     textID = id;
-    updateLocalizedText();
+		if (isLocalized && !textID.empty()) {
+				updateLocalizedText();
+		}
 }
 
 void Label::updateLocalizedText()
 {
     if (!textID.empty())
     {
-        /*text = LocalizationManager::getInstance()
-                   .getText(textID);*/
+        //setText(LocalisationManager::getInstance().getTranslation(textID));
     }
 }
 
@@ -99,7 +118,6 @@ void Label::render() {
 				float x = position.x;
 				float y = position.y + size.y;  
 
-				// TODO: Gérer les UTF-8
 				for (char c : text) {
 						if (c >= 32 && c < 128) {
 								stbtt_aligned_quad q;
