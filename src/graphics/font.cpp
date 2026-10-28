@@ -79,6 +79,18 @@ const stbtt_bakedchar* Font::getBakedChars() const {
 		return cdata;
 }
 
+int Font::getGlyphIndex(uint32_t codepoint) const {
+		if (hasGlyph(codepoint)) {
+				return codepoint - FIRST_CHAR;
+		}
+		return -1;
+}
+
+bool Font::hasGlyph(uint32_t codepoint) const
+{
+      return codepoint >= FIRST_CHAR && codepoint < (FIRST_CHAR + NUM_CHARS);
+}
+
 bool Font::isLoaded() const {
 		return ttfBuffer != nullptr;
 }

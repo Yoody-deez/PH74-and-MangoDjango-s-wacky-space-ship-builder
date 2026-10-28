@@ -12,7 +12,7 @@ using namespace std;
  */
 class Font : public Resource {
 private:
-    // CONSTANTES
+    // CONSTANTES PRIVÉS
 
     static constexpr int FIRST_CHAR = 32; // Premier caractère ASCII à inclure dans l'atlas de caractères (espace)
     static constexpr int NUM_CHARS = 224; // Nombre total de caractères à inclure dans l'atlas de caractères (de l'espace à 255)
@@ -53,6 +53,20 @@ public:
      * @return Un pointeur vers le tableau des caractères cuits.
      */
     const stbtt_bakedchar* getBakedChars() const;
+
+    /** 
+     * @brief Vérifie si la police contient un glyphe pour un point de code donné. Attention, vérifie si le point de code est dans la plage, mais pas si le glyphe est réellement présent dans la police.
+     * @param codepoint Le point de code à vérifier.
+     * @return true si la police contient le glyphe, false sinon.
+     */
+    bool hasGlyph(uint32_t codepoint) const;
+
+    /** 
+     * @brief Renvoie l'index du glyphe correspondant à un point de code donné.
+     * @param codepoint Le point de code pour lequel obtenir l'index du glyphe.
+     * @return L'index du glyphe correspondant au point de code, ou -1 si le glyphe n'existe pas.
+     */
+    int getGlyphIndex(uint32_t codepoint) const;
 
     /** 
      * @brief Vérifie si la police a été chargée avec succès.

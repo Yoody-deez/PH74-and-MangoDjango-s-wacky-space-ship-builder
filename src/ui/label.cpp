@@ -118,10 +118,21 @@ void Label::render() {
 				float x = position.x;
 				float y = position.y + size.y;  
 
-				for (char c : text) {
-						if (c >= 32 && c < 128) {
+				// La plage de caractères supportée par stb_truetype est de U+0020 à U+00FF, donc on ne peut pas afficher tous les caractères accentués français. Il faudra peut-être étendre la plage de caractères supportée pour les inclure.
+				
+				for (uint32_t codepoint : DecodeUTF8(text))
+				{
+						if (textFont->hasGlyph(codepoint))
+						{
+								int glyphIndex = textFont->getGlyphIndex(codepoint);
+
 								stbtt_aligned_quad q;
-								stbtt_GetBakedQuad(textFont->getBakedChars(), 512, 512, c - 32, &x, &y, &q, 1);
+								stbtt_GetBakedQuad(
+										textFont->getBakedChars(),
+										512, 512,
+										glyphIndex,
+										&x, &y, &q, 1
+								);
 
 								float vertices[] = {
 										q.x0, q.y1,  q.s0, q.t0,  
