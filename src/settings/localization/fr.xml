@@ -1,0 +1,85 @@
+<Dictionary language="fr">
+    <Text id="Main_Title">
+        Wacky Space Ship Builder
+    </Text>
+
+    <Text id="Main_PlayButton">
+        JOUER
+    </Text>
+
+    <Text id="Main_SettingsButton">
+        PARAMÈTRES
+    </Text>
+
+    <Text id="Main_CreditsButton">
+        CRÉDITS
+    </Text>
+
+    <Text id="Main_QuitButton">
+        QUITTER
+    </Text>
+
+    <Text id="Credits_Title">
+        CRÉDITS
+    </Text>
+
+    <Text id="Credits_Line1">
+        Par l'imagination douteuse de 
+    </Text>
+
+    <Text id="Credits_Line2">
+        Malik Goundiam et le "génie" de 
+    </Text>
+
+    <Text id="Credits_Line3">
+        Yannick Chauvette
+    </Text>
+
+    <Text id="Credits_ReturnButton">
+        RETOUR
+    </Text>
+
+    <Text id="Settings_Title">
+        PARAMÈTRES
+    </Text>
+
+    <Text id="Settings_ApplyButton">
+        APPLIQUER
+    </Text>
+
+    <Text id="Settings_BackButton">
+        RETOUR
+    </Text>
+
+    <Text id="Settings_LanguageSelectorFR">
+        FRANÇAIS
+    </Text>
+
+    <Text id="Settings_LanguageSelectorEN">
+        ANGLAIS
+    </Text>
+
+    <Text id="Settings_LanguageLabel">
+    LANGUE
+    </Text>
+
+    <Text id="Settings_ResolutionLabel">
+    RÉSOLUTION
+    </Text>
+
+    <Text id="Settings_FullscreenLabel">
+    PLEIN ÉCRAN
+    </Text>
+
+    <Text id="Settings_VsyncLabel">
+    SYNCHRO VERTICALE
+    </Text>
+
+    <Text id="Settings_MouseSensLabel">
+    SENSIBILITÉ SOURIS
+    </Text>
+    
+    <Text id="Settings_FovLabel">
+    CHAMP DE VISION (FOV)
+    </Text>
+</Dictionary>

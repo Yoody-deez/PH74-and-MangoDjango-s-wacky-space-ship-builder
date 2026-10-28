@@ -30,25 +30,43 @@ public:
         return currentIndex;
     }
 
-    void onEvent(Event e) override {
-    if (e.type == Event::Type::MOUSE_CLICK && e.button == 1) {
-        float correctedMouseY = 600.0f - e.mousePos.y;
+    void setCurrentIndex(int index) {
+        if (!options.empty()) {
+            currentIndex = (index >= 0 && index < (int)options.size()) ? index : 0;
+            optionLabel.setText(options[currentIndex]);
+        }
+    }
 
-        if (e.mousePos.x >= posRef.x && e.mousePos.x <= posRef.x + sizeRef.x &&
-            correctedMouseY >= posRef.y && correctedMouseY <= posRef.y + sizeRef.y) {
-            
-            if (e.mousePos.x < posRef.x + (sizeRef.x / 2.0f)) {
-                currentIndex = (currentIndex > 0) ? currentIndex - 1 : (int)options.size() - 1;
-            } else {
-                currentIndex = (currentIndex < (int)options.size() - 1) ? currentIndex + 1 : 0;
+    void setItems(const std::vector<std::string>& newItems) {
+        options = newItems;
+        if (!options.empty()) {
+            if (currentIndex >= (int)options.size()) {
+                currentIndex = 0;
             }
+            optionLabel.setText(options[currentIndex]);
+        }
+    }  
 
-            if (!options.empty()) {
-                optionLabel.setText(options[currentIndex]);
+    void onEvent(Event e) override {
+        if (e.type == Event::Type::MOUSE_CLICK && e.button == 1) {
+            float correctedMouseY = 600.0f - e.mousePos.y;
+
+            if (e.mousePos.x >= posRef.x && e.mousePos.x <= posRef.x + sizeRef.x &&
+                correctedMouseY >= posRef.y && correctedMouseY <= posRef.y + sizeRef.y) {
+                
+                if (e.mousePos.x < posRef.x + (sizeRef.x / 2.0f)) {
+                    currentIndex = (currentIndex > 0) ? currentIndex - 1 : (int)options.size() - 1;
+                } else {
+                    currentIndex = (currentIndex < (int)options.size() - 1) ? currentIndex + 1 : 0;
+                }
+
+                if (!options.empty()) {
+                    optionLabel.setText(options[currentIndex]);
+                }
             }
         }
     }
-}
+
     void render() override {
         if (!options.empty()) {
             optionLabel.render();

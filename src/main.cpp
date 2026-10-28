@@ -1,6 +1,7 @@
 #include <SDL3/SDL.h>
 #include <glad/gl.h>
 #include <iostream>
+#include <filesystem>
 
 #include "WindowFactory.h"
 #include "WindowManager.h"
@@ -15,6 +16,9 @@
 #include "graphics/texture.h"
 #include "graphics/font.h"
 #include "core/matrix4x4.h"
+#include "core/configManager.h"
+#include "settings/settingsApplier.h"
+#include "settings/localisationManager.h"
 
 constexpr int WINDOW_WIDTH = 800;
 constexpr int WINDOW_HEIGHT = 600;
@@ -25,6 +29,25 @@ int WinMain(int argc, char* argv[])
         std::cerr << "Erreur SDL_Init: " << SDL_GetError() << std::endl;
         return -1;
     }
+
+    std::filesystem::path configPath = std::filesystem::path(__FILE__).parent_path() / "settings" / "settings.xml";
+
+    if (ConfigManager::getInstance().loadFromFile(configPath.string())) {
+        std::cout << "[CONFIG] Parametres charges depuis le fichier :" << std::endl;
+    } else {
+        std::cout << "[CONFIG] Utilisation des valeurs par defaut." << std::endl;
+    }
+
+    std::cout << "  - Langue Index : " << ConfigManager::getInstance().getLanguageIndex() << std::endl;
+    std::cout << "  - Resolution Index : " << ConfigManager::getInstance().getResolutionIndex() << std::endl;
+    std::cout << "  - Plein ecran : " << (ConfigManager::getInstance().isFullscreen() ? "Oui" : "Non") << std::endl;
+    std::cout << "  - VSync : " << (ConfigManager::getInstance().isVsync() ? "Oui" : "Non") << std::endl;
+    std::cout << "  - Sensibilite Souris : " << ConfigManager::getInstance().getMouseSensitivity() << std::endl;
+    std::cout << "  - FOV : " << ConfigManager::getInstance().getFov() << std::endl;
+
+    int langIdx = ConfigManager::getInstance().getLanguageIndex();
+    std::string langCode = (langIdx == 1) ? "en" : "fr";
+    LocalisationManager::getInstance().setLanguage(langCode);
 
     SDL_Window* sdlWin = SDL_CreateWindow("Moteur 3D - C++ / OpenGL", WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_OPENGL);
     if (!sdlWin) {
@@ -37,6 +60,8 @@ int WinMain(int argc, char* argv[])
         SDL_Quit();
         return -1;
     }
+
+    SettingsApplier::applySettings(sdlWin);
 
     Shader vs("shaders/vertexShader.vs", GL_VERTEX_SHADER);
     if (!vs.compile()) {
@@ -71,9 +96,8 @@ matrix4x4 orthoProj = matrix4x4::ortho(0.0f, (float)WINDOW_WIDTH, 0.0f, (float)W
     font* gameFont = new font("assets/fonts/VCR_OSD_MONO_1.001.ttf");    texture* bgTexture = new texture("assets/textures/Skyboxes/skybox-space.png");
 
     sceneMgr.addScene("MainScene", new mainScene(bgTexture, gameFont));
-    sceneMgr.addScene("SettingsScene", new settingsScene(bgTexture, gameFont));
+    sceneMgr.addScene("SettingsScene", new settingsScene(bgTexture, gameFont, sdlWin));
     sceneMgr.addScene("CreditsScene", new creditsScene(bgTexture, gameFont));
-
     sceneMgr.switchTo("MainScene");
 
     Uint64 lastTime = SDL_GetTicks();
@@ -85,6 +109,11 @@ matrix4x4 orthoProj = matrix4x4::ortho(0.0f, (float)WINDOW_WIDTH, 0.0f, (float)W
         float deltaTime = (currentTime - lastTime) / 1000.0f;
         lastTime = currentTime;
 
+        int winWidth, winHeight;
+        SDL_GetWindowSize(sdlWin, &winWidth, &winHeight);
+        float scaleX = 800.0f / (float)winWidth;
+        float scaleY = 600.0f / (float)winHeight;
+
         while (SDL_PollEvent(&sdlEvent)) {
             if (sdlEvent.type == SDL_EVENT_QUIT) {
                 isRunning = false;
@@ -93,22 +122,28 @@ matrix4x4 orthoProj = matrix4x4::ortho(0.0f, (float)WINDOW_WIDTH, 0.0f, (float)W
             Event e;
             if (sdlEvent.type == SDL_EVENT_MOUSE_MOTION) {
                 e.type = Event::Type::MOUSE_MOVE;
-                e.mousePos = Vector2(sdlEvent.motion.x, sdlEvent.motion.y);
+                e.mousePos = Vector2(sdlEvent.motion.x * scaleX, sdlEvent.motion.y * scaleY);
             }
             else if (sdlEvent.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
                 e.type = Event::Type::MOUSE_CLICK;
                 e.button = (sdlEvent.button.button == SDL_BUTTON_LEFT) ? 1 : -1;
-                e.mousePos = Vector2(sdlEvent.button.x, sdlEvent.button.y);
+                e.mousePos = Vector2(sdlEvent.button.x * scaleX, sdlEvent.button.y * scaleY);
             }
             else if (sdlEvent.type == SDL_EVENT_MOUSE_BUTTON_UP) {
                 e.type = Event::Type::MOUSE_CLICK;
                 e.button = -1;
-                e.mousePos = Vector2(sdlEvent.button.x, sdlEvent.button.y);
+                e.mousePos = Vector2(sdlEvent.button.x * scaleX, sdlEvent.button.y * scaleY);
             }
 
             if (sceneMgr.getCurrentScene()) {
                 sceneMgr.getCurrentScene()->getEventManager().notify(e);
             }
+        }
+
+        matrix4x4 orthoProj = matrix4x4::ortho(0.0f, 800.0f, 0.0f, 600.0f, -1.0f, 1.0f);
+        int projLoc = shaderProgram.getUniformLocation("uProjection");
+        if (projLoc != -1) {
+            glUniformMatrix4fv(projLoc, 1, GL_FALSE, orthoProj);
         }
 
         sceneMgr.update(deltaTime);

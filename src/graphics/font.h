@@ -12,10 +12,10 @@ class font : public resource {
 private:
     unsigned char* ttfBuffer;
     stbtt_fontinfo fontInfo;
-    stbtt_bakedchar cdata[96]; 
+    stbtt_bakedchar cdata[224];
     unsigned int atlasTextureID;
-    int atlasWidth = 512;
-    int atlasHeight = 512;
+    int atlasWidth = 1024;
+    int atlasHeight = 1024;
 
 public:
     font(const std::string& path) : resource(path), ttfBuffer(nullptr), atlasTextureID(0) {
@@ -44,8 +44,11 @@ public:
         }
 
         unsigned char* bitmap = new unsigned char[atlasWidth * atlasHeight];
-        // Taille de la police fixée à 32 pixels de haut
-        stbtt_BakeFontBitmap(ttfBuffer, 0, 32.0f, bitmap, atlasWidth, atlasHeight, 32, 96, cdata);
+        
+        int result = stbtt_BakeFontBitmap(ttfBuffer, 0, 32.0f, bitmap, atlasWidth, atlasHeight, 32, 224, cdata);
+        if (result <= 0) {
+            std::cout << "Avertissement : L'atlas de police a eu du mal à tout caser !" << std::endl;
+        }
 
         glGenTextures(1, &atlasTextureID);
         glBindTexture(GL_TEXTURE_2D, atlasTextureID);
@@ -55,7 +58,7 @@ public:
         glBindTexture(GL_TEXTURE_2D, 0);
 
         delete[] bitmap;
-        std::cout << "Police TrueType chargée et convertie en atlas : " << path << std::endl;
+        std::cout << "Police TrueType chargée et convertie en atlas étendu : " << path << std::endl;
     }
 
     ~font() override {

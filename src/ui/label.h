@@ -5,6 +5,7 @@
 #include "visualControl.h"
 #include "../graphics/texture.h"
 #include "../graphics/font.h"
+#include "../ui/utf8.h"
 
 class label : public visualControl {
 private:
@@ -96,11 +97,11 @@ public:
             float x = position.x;
             float y = position.y + size.y;  
 
-            for (char c : text) {
-                if (c >= 32 && c < 128) {
+            vector<uint32_t> unicodeChars = DecodeUTF8(text);
+            for (uint32_t c : unicodeChars) {
+                if (c >= 32 && c < 255) {
                     stbtt_aligned_quad q;
-                    stbtt_GetBakedQuad(textFont->getBakedChars(), 512, 512, c - 32, &x, &y, &q, 1);
-
+                    stbtt_GetBakedQuad(textFont->getBakedChars(), 1024, 1024, c - 32, &x, &y, &q, 1);
                     float vertices[] = {
                         q.x0, q.y1,  q.s0, q.t0,  
                         q.x0, q.y0,  q.s0, q.t1,    
