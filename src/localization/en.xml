@@ -1,13 +1,61 @@
 <Dictionary language="en">
-    <Text id="Main_SettingsButton">
-        Paramètres
+    <Text id="Main_Title">
+        Wacky Space Ship Builder
     </Text>
 
     <Text id="Main_PlayButton">
-        Jouer
+        PLAY
+    </Text>
+    
+    <Text id="Main_SettingsButton">
+        SETTINGS
     </Text>
 
-    <Text id="Credits_Back">
-        Retour
+    <Text id="Main_CreditsButton">
+        CREDITS
+    </Text>
+
+    <Text id="Main_QuitButton">
+        QUIT
+    </Text>
+
+    <Text id="Credits_Title">
+        CREDITS
+    </Text>
+
+    <Text id="Credits_Line1">
+        By the dubious imagination of 
+    </Text>
+
+    <Text id="Credits_Line2">
+        Malik Goundiam and the "genius" of 
+    </Text>
+
+    <Text id="Credits_Line3">
+        Yannick Chauvette
+    </Text>
+
+    <Text id="Credits_ReturnButton">
+        BACK
+    </Text>
+
+    <Text id="Settings_Title">
+        SETTINGS
+    </Text>
+
+    <Text id="Settings_ApplyButton">
+        APPLY
+    </Text>
+
+    <Text id="Settings_BackButton">
+        BACK
+    </Text>
+
+    <Text id="Settings_LanguageSelectorFR">
+        FRENCH
+    </Text>
+
+    <Text id="Settings_LanguageSelectorEN">
+        ENGLISH
     </Text>
 </Dictionary>

@@ -1,6 +1,6 @@
 <Dictionary language="fr">
     <Text id="Main_Title">
-        Wacky Space SHip Builder
+        Wacky Space Ship Builder
     </Text>
 
     <Text id="Main_PlayButton">
@@ -8,11 +8,11 @@
     </Text>
 
     <Text id="Main_SettingsButton">
-        PARAMETRES
+        PARAMÈTRES
     </Text>
 
     <Text id="Main_CreditsButton">
-        CREDITS
+        CRÉDITS
     </Text>
 
     <Text id="Main_QuitButton">
@@ -20,7 +20,7 @@
     </Text>
 
     <Text id="Credits_Title">
-        CREDITS
+        CRÉDITS
     </Text>
 
     <Text id="Credits_Line1">
@@ -40,7 +40,7 @@
     </Text>
 
     <Text id="Settings_Title">
-        PARAMETRES
+        PARAMÈTRES
     </Text>
 
     <Text id="Settings_ApplyButton">
@@ -52,7 +52,7 @@
     </Text>
 
     <Text id="Settings_LanguageSelectorFR">
-        FRANCAIS
+        FRANÇAIS
     </Text>
 
     <Text id="Settings_LanguageSelectorEN">
