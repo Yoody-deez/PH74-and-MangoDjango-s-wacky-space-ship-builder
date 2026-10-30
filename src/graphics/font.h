@@ -6,6 +6,7 @@
 
 class Font : public Resource {
 private:
+    static constexpr int FIRST_CHAR = 32; // Premier caractère ASCII à inclure dans l'atlas de caractères (espace)
     static constexpr int NUM_CHARS = 224; // Nombre total de caractères à inclure dans l'atlas de caractères (de l'espace à 255)
     static constexpr int ATLAS_WIDTH = 1024; // Largeur de l'atlas de caractères
     static constexpr int ATLAS_HEIGHT = 1024; // Hauteur de l'atlas de caractères

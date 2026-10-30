@@ -30,7 +30,7 @@ Font::Font(const std::string& path) : Resource(path), ttfBuffer(nullptr), atlasT
 
 		unsigned char* bitmap = new unsigned char[ATLAS_WIDTH * ATLAS_HEIGHT];
 		
-		int result = stbtt_BakeFontBitmap(ttfBuffer, 0, 32.0f, bitmap, ATLAS_WIDTH, ATLAS_HEIGHT, 32, 224, cdata);
+		int result = stbtt_BakeFontBitmap(ttfBuffer, 0, 32.0f, bitmap, ATLAS_WIDTH, ATLAS_HEIGHT, FIRST_CHAR, NUM_CHARS, cdata);
 		if (result <= 0) {
 				std::cout << "Avertissement : L'atlas de police a eu du mal à tout caser !" << std::endl;
 		}
