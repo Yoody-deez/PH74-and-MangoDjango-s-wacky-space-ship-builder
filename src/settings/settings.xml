@@ -2,7 +2,7 @@
 <Settings>
     <Language>0</Language>
     <Resolution>0</Resolution>
-    <Fullscreen>false</Fullscreen>
+    <Fullscreen>true</Fullscreen>
     <VSync>true</VSync>
     <MouseSensitivity>0.1</MouseSensitivity>
     <FOV>60</FOV>

@@ -1,6 +1,5 @@
 #pragma once
 #include <string>
-#include <iostream>
 #include "settings.h"
 
 class Engine {
@@ -8,59 +7,25 @@ private:
     bool isRunning;
     Settings settings;
 
-    Engine() : isRunning(false) {}
+    Engine();
 
-    ~Engine() {
-        stop();
-    }
-
+    ~Engine();
     Engine(const Engine&) = delete;
     Engine& operator=(const Engine&) = delete;
 
 public:
-    static Engine& getInstance() {
-        static Engine instance;
-        return instance;
-    }
+    static Engine& getInstance();
 
-    void init(const std::string& configPath) {
-        std::cout << "Initialisation du moteur..." << std::endl;
-        
-        settings.load(configPath);
+    void init(const std::string& configPath);
 
-        isRunning = true;
-    }
+    void run();
 
-    void run() {
-        std::cout << "Démarrage de la boucle principale (Engine::run)..." << std::endl;
-        
-        while (isRunning) {
-            // 1. Gérer les entrées clavier/souris (Poll events)
-            // 2. Mettre à jour la logique du jeu / de l'UI
-            // 3. Rendu graphique (OpenGL)
-            
-            // Pour l'instant, on s'assure qu'on peut sortir de la boucle si besoin
-            // (Tu ajouteras la condition de fermeture de fenêtre ici plus tard)
-            break;
-        }
-    }
-
-    void stop() {
-        if (isRunning) {
-            std::cout << "Arrêt du moteur en cours..." << std::endl;
-            isRunning = false;
-        }
-    }
+    void stop();
 
     // Récupérer les paramètres
-    Settings& getSettings() {
-        return settings;
-    }
+    Settings& getSettings();
 
-    void saveSettings(const std::string& configPath) {
-        settings.save(configPath);
-        std::cout << "Paramètres sauvegardés dans : " << configPath << std::endl;
-    }
+    void saveSettings(const std::string& configPath);
 
-    bool getIsRunning() const { return isRunning; }
+    bool getIsRunning() const;
 };
